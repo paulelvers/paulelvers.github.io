@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>The Sound of Success</title>
+  <title>Hierachical clustering of musical taste</title>
 
   
   
@@ -14,15 +14,15 @@
 
 
   
-  <meta name="author" content="Paul Elvers" />
-  <meta name="description" content=" How does motivational music influence your mind and body during sports and excercise? " />
+  <meta name="author" content="" />
+  <meta name="description" content="Clustering is an important tool in data science that allows detecting similarities of objects in a data set. It is not one algorithm but describes a family of algorithms that seeks to identify objects that closely resemble each other. From a given set of features, a measure of proximity for each object of a data set is derived. Objects are then clustered based on the distance measure. The analysis yields &amp;ldquo;clusters&amp;rdquo; (groups or types of things) that share a unique set of features and distinguish the objects from those in other clusters." />
 
   
   
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@PaulElvers" />
-    <meta name="twitter:title" content="The Sound of Success" />
-    <meta name="twitter:description" content=" How does motivational music influence your mind and body during sports and excercise? " />
+    <meta name="twitter:title" content="Hierachical clustering of musical taste" />
+    <meta name="twitter:description" content="Clustering is an important tool in data science that allows detecting similarities of objects in a data set. It is not one algorithm but describes a family of algorithms that seeks to identify objects that closely resemble each other. From a given set of features, a measure of proximity for each object of a data set is derived. Objects are then clustered based on the distance measure. The analysis yields &amp;ldquo;clusters&amp;rdquo; (groups or types of things) that share a unique set of features and distinguish the objects from those in other clusters." />
     <meta name="twitter:image" content="/img/avatar.jpg" />
   
 
@@ -32,7 +32,7 @@
 <meta name="generator" content="Hugo 0.31" />
 
 
-<link rel="canonical" href="/post/migrate-from-jekyll/" />
+<link rel="canonical" href="/post/hierachical-clustering/" />
 <link rel="alternative" href="/index.xml" title="Paul Elvers" type="application/atom+xml" />
 
 
@@ -191,17 +191,34 @@
 
   <section class="main post-detail">
     <header class="post-header">
-      <h1 class="post-title">The Sound of Success</h1>
-      <p class="post-meta">@Paul Elvers · Mar 10, 2017 · 1 min read</p>
+      <h1 class="post-title">Hierachical clustering of musical taste</h1>
+      <p class="post-meta">@ · Aug 20, 2015 · 2 min read</p>
     </header>
-    <article class="post-content">
+    <article class="post-content"><p>Clustering is an important tool in data science that allows detecting similarities of objects in a data set. It is not one algorithm but describes a family of algorithms that seeks to identify objects that closely resemble each other. From a given set of features, a measure of proximity for each object of a data set is derived. Objects are then clustered based on the distance measure. The analysis yields &ldquo;clusters&rdquo; (groups or types of things) that share a unique set of features and distinguish the objects from those in other clusters.</p>
 
-<h2 id="how-does-motivational-music-influence-your-mind-and-body-during-sports-and-excercise">How does motivational music influence your mind and body during sports and excercise?</h2>
+<p>In my research I was interested in types of music preference. Based on survey data (n=1003) preference ratings for musical styles were obtained.
+In to identify clusters of music listeniners that share a particular musical taste I applied hierachical clustering. The features I used for the analysis were preference ratings of musical taste on five preference dimensions &ldquo;Hard Rock&rdquo;, &ldquo;Jazz&rdquo;,&ldquo;Rock&rdquo;,&ldquo;Pop&rdquo;,&ldquo;Classical&rdquo;.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r">musical_taste <span class="o">=</span> na.omit<span class="p">(</span>musical_taste<span class="p">)</span>                                     <span class="c1"># eliminate rows with missing values</span>
+dist.matrixq
+dist.cluster <span class="o">=</span> hclust<span class="p">(</span>dist<span class="p">(</span>p.clust<span class="p">),</span>method <span class="o">=</span><span class="s">&#39;ward&#39;</span><span class="p">)</span>        
+plot<span class="p">(</span>dist.cluster<span class="p">,</span>hang<span class="o">=</span><span class="m">-1</span><span class="p">)</span>
+groups<span class="o">=</span>cutree<span class="p">(</span>dist.cluster<span class="p">,</span> k<span class="o">=</span><span class="m">3</span><span class="p">)</span>  
+rect.hclust<span class="p">(</span>dist.cluster<span class="p">,</span> k<span class="o">=</span><span class="m">3</span><span class="p">,</span>border<span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+p.cmpl<span class="o">&lt;-</span><span class="kp">merge</span><span class="p">(</span>pref.cmpl<span class="p">,</span>groups<span class="p">,</span>by<span class="o">=</span><span class="s">&#34;row.names&#34;</span><span class="p">)</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span>NbClust<span class="p">)</span>
+NbClust<span class="p">(</span>data <span class="o">=</span> muscal_taste <span class="p">,</span> diss <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> distance <span class="o">=</span> <span class="s">&#34;euclidean&#34;</span><span class="p">,</span>
+        min.nc <span class="o">=</span> <span class="m">2</span><span class="p">,</span> max.nc <span class="o">=</span> <span class="m">15</span><span class="p">,</span> method <span class="o">=</span> <span class="s">&#34;centroid&#34;</span><span class="p">,</span> index <span class="o">=</span> <span class="s">&#34;all&#34;</span><span class="p">)</span></code></pre></div>
+<p>It was decided to use a distance matrix with a Euclidean distance measure. Figure 1 shows a cluster-dendrogram of the hierarchical agglomeration, which starts at the bottom with each case as a cluster until the top where all cases are merged into one cluster. The optimal number of clusters was determined by the maximal increase in cluster height, a criterion described by Everitt (1974). This resulted in a three-cluster-solution, as indicated by the red lines in the plot in Figure 1.</p>
+
+<p><img src="/d.png" alt="This picture" /></p>
 </article>
     <footer class="post-footer">
       
+      <ul class="post-tags">
+        
+      </ul>
+      
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.This post was published <strong>266</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.This post was published <strong>834</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

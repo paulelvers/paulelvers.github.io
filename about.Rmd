@@ -1,0 +1,21 @@
+---
+title: "About"
+date: "2014-04-09"
+layout: "about"
+menu: "main"
+weight: 40
+---
+
+I apply data science tools to learn about people’s behavior,  
+currently at Goldmsiths, University of London and University of Hamburg.  
+Before I was research fellow at Max Planck Institute for Empirical Aesthetics and  
+visiting researcher at University of Oxford.
+
+You can download my CV [here](https://www.google.com).
+
+
+
+
+
+
+
