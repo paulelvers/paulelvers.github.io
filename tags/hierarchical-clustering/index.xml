@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hierachical Clustering on Paul Elvers</title>
-    <link>/tags/hierachical-clustering/</link>
-    <description>Recent content in Hierachical Clustering on Paul Elvers</description>
+    <title>Hierarchical Clustering on Paul Elvers</title>
+    <link>/tags/hierarchical-clustering/</link>
+    <description>Recent content in Hierarchical Clustering on Paul Elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.</copyright>
     <lastBuildDate>Thu, 20 Aug 2015 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/hierachical-clustering/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/hierarchical-clustering/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hierachical clustering of musical taste</title>
+      <title>Hierarchical clustering of musical taste</title>
       <link>/post/hierachical-clustering/</link>
       <pubDate>Thu, 20 Aug 2015 00:00:00 +0000</pubDate>
       

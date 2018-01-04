@@ -1,16 +1,16 @@
 ---
-title: Hierachical clustering of musical taste
+title: Hierarchical clustering of musical taste
 author: ~
 date: '2015-08-20'
 slug: hierachical-clustering
 categories: [R]
-tags: [Rstats, data mining, hierachical clustering]
+tags: [Rstats, data mining, hierarchical clustering]
 output: html_document
 highlight: tango
 ---
 Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics. 
 
-The multiple existing clustering methods can be roughly divided into two groups: Those where the number of clusters is pre-defined (e.g. in k-means clustering) and thoses where the number is defined by the algorithm (and additional heuristics). One approach belonging to the latter is hierachical clustering, which is useful, when the number and structure of clusters is unknown. An agglomerative hierachical clustering algorithm for example starts with each observation unit as one cluster, then it groups the two most similar objects into a cluster of two, then a cluster of two into a cluster of four and so on, until all objects are combined in one big cluster. The advantage of hierachical clusering is that the number of clusters is not predefined but instead evluated based on the data structure and the output of the clustering procedure. 
+The multiple existing clustering methods can be roughly divided into two groups: Those where the number of clusters is pre-defined (e.g. in k-means clustering) and thoses where the number is defined by the algorithm (and additional heuristics). One approach belonging to the latter is hierarchical clustering, which is useful, when the number and structure of clusters is unknown. An agglomerative hierarchical clustering algorithm for example starts with each observation unit as one cluster, then it groups the two most similar objects into a cluster of two, then a cluster of two into a cluster of four and so on, until all objects are combined in one big cluster. The advantage of hierarchical clusering is that the number of clusters is not predefined but instead evluated based on the data structure and the output of the clustering procedure. 
 
 The procedure of the clustering prossess is as follows: From a given set of features, a measure of proximity for each object is derived (based on a predefined and possibly engeneered feature matrix) resulting in a distance matrix. There are several options for calculating the distances but the most common and straightforward is Euclidean distance. The analysis yields "clusters" (groups or types of things) that share a unique set of features.
 
@@ -39,13 +39,13 @@ na.omit() %>% # eliminate rows with missing values
 dist(method = 'euclidean') %>%  # compute euclidean distance matrix
 ```
 
-The distance matrix was then passed to the hierachical clustering algorithm (using the hclust() function from the stats pakage) and the result was plotted. After inspecting the plot and applying additional heuristics (with the NbClust function), the optimal number of clusters was determined to be three.
+The distance matrix was then passed to the hierarchical clustering algorithm (using the hclust() function from the stats pakage) and the result was plotted. After inspecting the plot and applying additional heuristics (with the NbClust function), the optimal number of clusters was determined to be three.
 
 ```{r eval=FALSE, theme="Olive"}
 
 # Applying the clustering algorithm
 dist.mat %>%
-hclust(method ='ward') %>%  #applying hierachical clustering to distance matrix
+hclust(method ='ward') %>%  #applying hierarchical clustering to distance matrix
 plot(hang=-1) # plot dist cluster, labels at the same level
 
 # Determining the optimal number of clusters
