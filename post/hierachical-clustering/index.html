@@ -15,14 +15,14 @@
 
   
   <meta name="author" content="" />
-  <meta name="description" content="Clustering is an important tool in data science that allows detecting similarities of objects in a data set. It is not one algorithm but describes a family of algorithms that seeks to identify objects that closely resemble each other. From a given set of features, a measure of proximity for each object of a data set is derived. Objects are then clustered based on the distance measure. The analysis yields &amp;ldquo;clusters&amp;rdquo; (groups or types of things) that share a unique set of features and distinguish the objects from those in other clusters." />
+  <meta name="description" content="Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics." />
 
   
   
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@PaulElvers" />
     <meta name="twitter:title" content="Hierachical clustering of musical taste" />
-    <meta name="twitter:description" content="Clustering is an important tool in data science that allows detecting similarities of objects in a data set. It is not one algorithm but describes a family of algorithms that seeks to identify objects that closely resemble each other. From a given set of features, a measure of proximity for each object of a data set is derived. Objects are then clustered based on the distance measure. The analysis yields &amp;ldquo;clusters&amp;rdquo; (groups or types of things) that share a unique set of features and distinguish the objects from those in other clusters." />
+    <meta name="twitter:description" content="Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics." />
     <meta name="twitter:image" content="/img/avatar.jpg" />
   
 
@@ -192,33 +192,70 @@
   <section class="main post-detail">
     <header class="post-header">
       <h1 class="post-title">Hierachical clustering of musical taste</h1>
-      <p class="post-meta">@ · Aug 20, 2015 · 2 min read</p>
+      <p class="post-meta">@ · Aug 20, 2015 · 4 min read</p>
     </header>
-    <article class="post-content"><p>Clustering is an important tool in data science that allows detecting similarities of objects in a data set. It is not one algorithm but describes a family of algorithms that seeks to identify objects that closely resemble each other. From a given set of features, a measure of proximity for each object of a data set is derived. Objects are then clustered based on the distance measure. The analysis yields &ldquo;clusters&rdquo; (groups or types of things) that share a unique set of features and distinguish the objects from those in other clusters.</p>
+    <article class="post-content"><p>Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics.</p>
+<p>The multiple existing clustering methods can be roughly divided into two groups: Those where the number of clusters is pre-defined (e.g. in k-means clustering) and thoses where the number is defined by the algorithm (and additional heuristics). One approach belonging to the latter is hierachical clustering, which is useful, when the number and structure of clusters is unknown. An agglomerative hierachical clustering algorithm for example starts with each observation unit as one cluster, then it groups the two most similar objects into a cluster of two, then a cluster of two into a cluster of four and so on, until all objects are combined in one big cluster. The advantage of hierachical clusering is that the number of clusters is not predefined but instead evluated based on the data structure and the output of the clustering procedure.</p>
+<p>The procedure of the clustering prossess is as follows: From a given set of features, a measure of proximity for each object is derived (based on a predefined and possibly engeneered feature matrix) resulting in a distance matrix. There are several options for calculating the distances but the most common and straightforward is Euclidean distance. The analysis yields “clusters” (groups or types of things) that share a unique set of features.</p>
+<p>In the research project we were interested in types of music taste. In an online survey participants (n=1003) indicated their listening frequency for 22 musical styles. Based on a principal component analysis six dimensions of musical taste were identified and used for the analysis. The data looked like this:</p>
+<style>
+div.blue pre { background-color:WhiteSmoke; }
+div.blue pre.r { background-color:WhiteSmoke; }
+</style>
+<div class = "blue">
 
-<p>In my research I was interested in types of music preference. Based on survey data (n=1003) preference ratings for musical styles were obtained.
-In to identify clusters of music listeniners that share a particular musical taste I applied hierachical clustering. The features I used for the analysis were preference ratings of musical taste on five preference dimensions &ldquo;Hard Rock&rdquo;, &ldquo;Jazz&rdquo;,&ldquo;Rock&rdquo;,&ldquo;Pop&rdquo;,&ldquo;Classical&rdquo;.</p>
-<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r">musical_taste <span class="o">=</span> na.omit<span class="p">(</span>musical_taste<span class="p">)</span>                                     <span class="c1"># eliminate rows with missing values</span>
-dist.matrixq
-dist.cluster <span class="o">=</span> hclust<span class="p">(</span>dist<span class="p">(</span>p.clust<span class="p">),</span>method <span class="o">=</span><span class="s">&#39;ward&#39;</span><span class="p">)</span>        
-plot<span class="p">(</span>dist.cluster<span class="p">,</span>hang<span class="o">=</span><span class="m">-1</span><span class="p">)</span>
-groups<span class="o">=</span>cutree<span class="p">(</span>dist.cluster<span class="p">,</span> k<span class="o">=</span><span class="m">3</span><span class="p">)</span>  
-rect.hclust<span class="p">(</span>dist.cluster<span class="p">,</span> k<span class="o">=</span><span class="m">3</span><span class="p">,</span>border<span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
-p.cmpl<span class="o">&lt;-</span><span class="kp">merge</span><span class="p">(</span>pref.cmpl<span class="p">,</span>groups<span class="p">,</span>by<span class="o">=</span><span class="s">&#34;row.names&#34;</span><span class="p">)</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span>NbClust<span class="p">)</span>
-NbClust<span class="p">(</span>data <span class="o">=</span> muscal_taste <span class="p">,</span> diss <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> distance <span class="o">=</span> <span class="s">&#34;euclidean&#34;</span><span class="p">,</span>
-        min.nc <span class="o">=</span> <span class="m">2</span><span class="p">,</span> max.nc <span class="o">=</span> <span class="m">15</span><span class="p">,</span> method <span class="o">=</span> <span class="s">&#34;centroid&#34;</span><span class="p">,</span> index <span class="o">=</span> <span class="s">&#34;all&#34;</span><span class="p">)</span></code></pre></div>
-<p>It was decided to use a distance matrix with a Euclidean distance measure. Figure 1 shows a cluster-dendrogram of the hierarchical agglomeration, which starts at the bottom with each case as a cluster until the top where all cases are merged into one cluster. The optimal number of clusters was determined by the maximal increase in cluster height, a criterion described by Everitt (1974). This resulted in a three-cluster-solution, as indicated by the red lines in the plot in Figure 1.</p>
 
-<p><img src="/d.png" alt="This picture" /></p>
+<pre><code>## # A tibble: 8 x 5
+##    JAZZ CLASSICAL HOUSE   POP  FOLK
+##   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1   2.3       2.3   4.3   2.8   4.0
+## 2   4.3       3.2   1.7   2.4   3.5
+## 3   2.8       2.3   2.3   4.3   4.3
+## 4   4.0       4.3   3.2   1.7   4.0
+## 5   5.1       2.8   2.4   4.3   1.7
+## 6   3.2       4.0   5.1   3.2   2.3
+## 7   1.7       2.8   2.4   4.3   1.7
+## 8   2.4       4.0   5.1   3.2   3.2</code></pre>
+<p>Based on these ratings a distance matrix (dist.mat) was computed with a Euclidean distance measure.</p>
+<pre class="r"><code>dist.mat &lt;- musical_taste %&gt;%
+na.omit() %&gt;% # eliminate rows with missing values
+dist(method = &#39;euclidean&#39;) %&gt;%  # compute euclidean distance matrix</code></pre>
+<p>The distance matrix was then passed to the hierachical clustering algorithm (using the hclust() function from the stats pakage) and the result was plotted. After inspecting the plot and applying additional heuristics (with the NbClust function), the optimal number of clusters was determined to be three.</p>
+<pre class="r"><code># Applying the clustering algorithm
+dist.mat %&gt;%
+hclust(method =&#39;ward&#39;) %&gt;%  #applying hierachical clustering to distance matrix
+plot(hang=-1) # plot dist cluster, labels at the same level
+
+# Determining the optimal number of clusters
+library(NbClust)
+NbClust(data = muscal_taste , diss = NULL, distance = &quot;euclidean&quot;,
+        min.nc = 2, max.nc = 15, method = &quot;ward&quot;, index = &quot;all&quot;)
+
+# Partition the data according to the cluster solution
+groups=cutree(dist.cluster, k=3)  
+rect.hclust(dist.cluster, k=3,border=&#39;red&#39;)</code></pre>
+<p>The figure below shows a cluster-dendrogram of the hierarchical agglomeration, which starts at the bottom with each case as a cluster until the top where all cases are merged into one cluster. The red lines mark the division of the data set into three clusters.</p>
+<p><img src="/post/hierachicalclustering_files/figure-html/unnamed-chunk-5-1.png" width="576" /></p>
+<p>Following the clustering of participants into three groups their specific profiles of musical taste were analyzed. The following figure displays the three profiles of musical taste indicating the mean frequency of listening (and 95% CIs) for each of the six dimensions.</p>
+<p><img src="/post/hierachicalclustering_files/figure-html/unnamed-chunk-6-1.png" width="576" /></p>
+<p>The “engaged listeners” cluster showed the greatest musical engagement with four of the six dimensions and showed peaks on Jazz and Classical. The “rock listeners” cluster showed a low engagement on the dimensions Jazz, Classical, and House, but a great interest in the rock-related musical styles. The “conventional listeners” cluster showed a medium engagement, in relation to the two other clusters, with a peak on the dimensions Classical, House, and Pop.</p>
+<p>In summary, the agglomerative hierarchical clustering approach was useful here because the exact number of clusters was previously unknown. It yielded a typology of music listeners with distinct profiles of musical engagement. These types were further analyzed in subsequent analyses in terms of individual differences. They may have also been used for marketing purposes, i.e. to inform decision making processes or target specific audiences and do already provide basic information about how musical taste is configured.</p>
+<p>If you found this short demonstration of a hierchical clustering algorithm interesting you can find more information about it in the full publication <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2015.01252/full">here</a>.</p>
 </article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
+          <li><a href="/tags/rstats"><span class="tag">Rstats</span></a></li>
+        
+          <li><a href="/tags/data-mining"><span class="tag">Data Mining</span></a></li>
+        
+          <li><a href="/tags/hierachical-clustering"><span class="tag">Hierachical Clustering</span></a></li>
+        
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.This post was published <strong>834</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.This post was published <strong>868</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -246,7 +283,7 @@ NbClust<span class="p">(</span>data <span class="o">=</span> muscal_taste <span 
     
   </section>
   <footer class="site-footer">
-  <p>© 2017 Paul Elvers</p>
+  <p>© 2017-2018 Paul Elvers</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
   
 </footer>

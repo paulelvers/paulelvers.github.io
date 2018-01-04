@@ -26,21 +26,12 @@ You can download my CV here.</description>
     </item>
     
     <item>
-      <title>The Sound of Success</title>
-      <link>/post/migrate-from-jekyll/</link>
-      <pubDate>Fri, 10 Mar 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/post/migrate-from-jekyll/</guid>
-      <description> How does motivational music influence your mind and body during sports and excercise? </description>
-    </item>
-    
-    <item>
       <title>Hierachical clustering of musical taste</title>
       <link>/post/hierachical-clustering/</link>
       <pubDate>Thu, 20 Aug 2015 00:00:00 +0000</pubDate>
       
       <guid>/post/hierachical-clustering/</guid>
-      <description>Clustering is an important tool in data science that allows detecting similarities of objects in a data set. It is not one algorithm but describes a family of algorithms that seeks to identify objects that closely resemble each other. From a given set of features, a measure of proximity for each object of a data set is derived. Objects are then clustered based on the distance measure. The analysis yields &amp;ldquo;clusters&amp;rdquo; (groups or types of things) that share a unique set of features and distinguish the objects from those in other clusters.</description>
+      <description>Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics.</description>
     </item>
     
   </channel>
