@@ -2,8 +2,7 @@
 title: 'Sentiment analysis of musical taste: a cross-European comparison'
 author: "Paul Elvers"
 date: '2018-01-12'
-output:
-  html_document: default
+output: html_document
 ---
 In this post I want to give a short introduction into sentiment analysis of web data in R. I analyzed the emotional valence of music from top 50 charts across Europe by retrieving data from Spotify's web API. I will first give you a short intro and then present the results. If you are more interested in how to do this, you'll find a link to the code written in R at the bottom.
 
