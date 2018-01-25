@@ -1,0 +1,241 @@
+---
+title: 'Sentiment analysis of musical taste: a cross-European comparison'
+author: "Paul Elvers"
+date: '2018-01-12'
+output:
+  html_document: default
+---
+In this post I want to give a short introduction into sentiment analysis of web data in R. I analyzed the emotional valence of music from top 50 charts across Europe by retrieving data from Spotify's web API. I will first give you a short intro and then present the results. If you are more interested in how to do this, you'll find a link to the code written in R at the bottom.
+
+As music obviously induces various emotional states, one pertinent research question is why some folks enjoy listening to sad music? Well, although sad music seems to really make some listeners sad, emotional states when listening to sad music are oftentimes more complex and may also involve positive emotions such as nostalgia and peacefulness. Furthermore, certain personality characteristics were found to be linked to the enjoyment of sad music, e.g. "openness to experience" and "empathy" [(see this study)](https://jyx.jyu.fi/dspace/bitstream/handle/123456789/48421/vuoskoskijketal311.full.pdf?sequence=1). But if there are individual differences in the enjoyment of sad music, may there also be cultural differences between nations? There definitely are some cultures that are supposed to particularly enjoy sad music (take the Portuguese [Fado](https://www.youtube.com/watch?v=ARS7Zi-Zpkw) for example). But do these cultural assumptions of regional musical taste in fact exist?
+
+By retrieving audio feature information from the Spotify API from "top 50 charts" of 25 European countries, I investigated and compared the emotional characteristics of nationwide musical taste in Europe. Spotify provides a set of features that gives information about musical pieces, that may be assessed through the [Spotify Web API](https://developer.spotify.com/web-api/). One of the musical features (see the full list [here](https://developer.spotify.com/web-api/get-audio-features/)) comprises a valence score that indicates the emotional positivity or negativity of the musical piece on a range from zero (very negative) to one (very positive). For data retrieval I used the really helpful [spotifyr](https://cran.r-project.org/web/packages/spotifyr/index.html) package. For the map below I used the [Highcharter](http://jkunst.com/highcharter/) package that provides an easy to use R interface for the Highcharts JavaScript graphics library.
+
+```{r setup, include=FALSE}
+# loading libraries
+### --------------------------------------------------
+library(spotifyr)
+
+# Setting system requirements for accessing Spotify API
+### --------------------------------------------------
+Sys.setenv(SPOTIFY_CLIENT_ID = '240c11ba18104666b25dca20cf191be5')
+Sys.setenv(SPOTIFY_CLIENT_SECRET = '55154bfe1d784c7bb24290b9cbceeb5c')
+access_token <- get_spotify_access_token(client_id = Sys.getenv('SPOTIFY_CLIENT_ID'), 
+                                         client_secret = Sys.getenv('SPOTIFY_CLIENT_SECRET'))
+
+# Retrieving data from Spotify
+### --------------------------------------------------
+
+# Retrieving user playlists
+# Top 50 Charts of all European countries were added to the user profile before
+# The function loads all songs from the playlist
+eutop50 <- get_user_playlists('delospro') %>%
+  get_playlist_tracks()
+
+# retrieving audio features for all musical pieces retrieved in the previous step
+features <- get_track_audio_features(eutop50)
+
+eutop50<-left_join(eutop50,features,by='track_uri')
+
+# Some string preprocessing
+
+# remove "Top 50"
+library(tm)
+eutop50$playlist_name<-removeWords(eutop50$playlist_name,c("Top","50", " "))
+# Change country names
+library(stringr)
+eutop50$playlist_name <- str_replace_all(eutop50$playlist_name, "CzechRepublic", "Czech Republic")
+eutop50$playlist_name <- str_replace_all(eutop50$playlist_name, "UnitedKingdom", "United Kingdom")
+
+
+
+```
+
+```{r, echo=FALSE,  error=F, message=F, warning=FALSE, fig.height = 12, fig.width = 10}
+# loading libraries
+### --------------------------------------------------
+library(highcharter)
+library(scales)
+
+# Mean valence score for each country
+map_stats<-eutop50 %>%
+  group_by(playlist_name) %>%
+  summarise(val = mean(valence))
+colnames(map_stats)<-c("Country","valence")
+
+# getting basic map of Europe
+eu_map <- get_data_from_map(download_map_data("custom/europe"))
+# mergin plotdata
+eu_plot<-left_join(map_stats, eu_map[,5:7], by = c("Country" = "name"))
+#rescaling the valence scores
+eu_plot$valence<-rescale(eu_plot$valence, to = c(-10, 10))
+
+# Specifying the highcharter plot
+hcmap("custom/europe", data = eu_plot, value = "valence", 
+      nullColor = "#FFFFFF",joinBy = c("hc-a2", "hc-a2"), name = "Mean Emotional Valence Score", 
+      #dataLabels = list(enabled = TRUE, format = '{point.name}'),
+      borderColor = "#BDBDBD", borderWidth = 0.1,
+      tooltip = list(valueDecimals = 2, valueSuffix = " Valence")) %>%
+  hc_colorAxis(minColor = "#342D7E", maxColor = "#FDD017") %>%
+  hc_title(text = "Emotion Classification of Top 50 Music Charts Across Europe") %>%
+  hc_legend(title= "Valence",align = "left", verticalAlign = "middle", reversed=T, margin = 30,
+            layout = "vertical", x = 0, y = -40)
+```
+
+Above you see a map of Europe. For each country the mean valence score is displayed and indicated by the coloring of the country. To make this more interpretable, the scores have been scaled from -10 to 10. Yellow means that the chart music in this country is very positive, blue means it is rather negative. We can already observe that there are quite some differences between the countries. Portugal's chart music for instance is sadder than Spain's charts. And, perhaps surprisingly, Turkey's chart music is also very positive. The Baltic states appear to prefer rather sad music, while the middle European countries are somewhere in between. Let's look at the five highest and lowest scoring countries:
+
+```{r  echo=F, error=F, message=F,}
+eutop50 %>%
+  group_by(playlist_name) %>%
+  summarise(mean_valence = mean(valence)) %>%
+  top_n(5, mean_valence) %>%
+  arrange(desc(mean_valence))
+
+eutop50 %>%
+  group_by(playlist_name) %>%
+  summarise(mean_valence = mean(valence)) %>%
+  top_n(-5, mean_valence) %>%
+  arrange(mean_valence)
+
+```
+
+
+## Testing some cultural assumptions
+
+Let's begin with Spain vs. Portugal. A Portuguese might characterize a Spanish person as superior-acting, loud and rude, whereas a Spanish person might think of the Portuguese as taciturn and melancholic. In addition, Portugal has its very own feeling, similar to the German "Weltschmerz" : Saudade. This is what A. F. G. Bell wrote about it: 
+
+"The famous saudade of the Portuguese is a vague and constant desire for something that does not and probably cannot exist, for something other than the present, a turning towards the past or towards the future; not an active discontent or poignant sadness but an indolent dreaming wistfulness."[*](https://en.wikipedia.org/wiki/Saudade)
+
+Thus, one should have reason to assume that they may also enjoy different kinds of music. Since chart music generally has a great overlap between nations, I excluded all tracks that appeared in both charts and conducted a simple two-sided Student's t-test to compare means of the two groups.
+```{r, echo=F, message=F, fig.height = 4, fig.width = 10}
+# loading libraries
+### --------------------------------------------------
+library(ggplot2)
+
+#Subset for Balearic Countries
+balearic<-eutop50 %>%
+  filter(playlist_name == "Spain" | playlist_name == "Portugal") %>%
+  select(playlist_name,track_uri,valence)
+balearic_index <- duplicated(balearic$track_uri) | duplicated(balearic$track_uri, fromLast = T)
+
+#Conducting t-test
+t.test(valence ~ playlist_name, data=balearic[!balearic_index,])
+
+# Summary statistics for Balearic Countries
+balearic_stats<-balearic[!balearic_index, ] %>%
+  group_by(playlist_name) %>%
+  summarise(sd = sd(valence), se = sd/sqrt(n()), valence = mean(valence))
+
+# Violin plot with means and SE-errorbars
+ggplot(balearic[!balearic_index, ], aes(y = valence, x = playlist_name)) +
+  geom_violin(alpha = 0.6) +
+  geom_jitter(size = 1,alpha = 0.5, width = 0.1) +
+  theme(axis.text.x = element_text(size = 12)) +
+  geom_errorbar(data = balearic_stats, width = 0.03, aes(ymin = valence - se, ymax = valence + se), colour = "darkgrey") +
+  geom_point(data = balearic_stats, aes(y = valence,x = playlist_name), shape = 21, size = 3, fill = "black", color = "black") +
+  xlab("") +
+  ylab("Valence") 
+```
+
+It appears that Portuguese chart music is indeed more negative in valence than Spanish chart music. This is suggested by the distributions shown by the violin plot as well as the statistics of the t-test. Let's take a look at the actual songs. First, I am going to print out songs of the Portuguese chart music with lowest valence scores.
+
+```{r  echo=F, error=F, message=F,}
+balearic[!balearic_index, ] %>%
+  filter(playlist_name == "Portugal") %>%
+  left_join(unique(eutop50[,3:6], by="track_uri")) %>%
+  select(valence, track_name, artist_name) %>%
+  arrange(valence)
+```
+
+Some familiar names but also quite a few Portuguese artists appear here. Having a first listen to it (I assume you'll be able to copy and paste track and artist name into your preferred music listening app), the songs do indeed appear to be rather sad. Let's take a look at the Spanish chart music with the highest valence scores next.
+
+```{r  echo=F, error=F, message=F,}
+balearic[!balearic_index, ] %>%
+  filter(playlist_name == "Spain") %>%
+  left_join(unique(eutop50[,3:6], by="track_uri")) %>%
+  select(valence, track_name, artist_name) %>%
+  arrange(desc(valence))
+```
+
+Shakira! As expected, the high valence tracks in Spain contain a lot of Spanish. Indeed, the ten highest valence pieces do not contain a single song in another language than Spanish. What strikes me most is that almost all pieces have a pronounced syncopated rhythmic structure that is typical for Latin American music.
+
+Ok. Let's take a look at some other stereotypes: What about northern vs. southern Europe? One common assumption is that people in northern Europe are less outgoing, maybe sometimes even sadder and definitely more introverted. Is this really the case? First, I had to think about how to divide Europe. A pretty straightforward approach is taking a geographical landmark as demarcation: Every country north of the Alps was assigned to northern Europe and every country south to southern Europe. Bear with me, this may not be the best way to divide it but it is one way of doing it. I applied the same procedure as in the first example and included only music pieces that are unique music pieces.
+
+```{r, echo=F, error=F, message=F, warning=FALSE, fig.height = 4, fig.width = 10}
+# loading libraries
+### --------------------------------------------------
+library(forcats)
+library(ggplot2)
+
+# using the forcats package for collapsing factor levels
+eutop50$direction<-eutop50$playlist_name %>% 
+  fct_collapse(north = c("Belgium", "Czech Republic", "Denmark",  
+                         "Estonia", "Finland", "France","Germany", 
+                         "Iceland", "Ireland", "Latvia", "Lithuania", 
+                         "Netherlands", "Norway", "Poland", "Sweden", 
+                         "United Kingdom"),
+               south = c("Austria","Greece", "Hungary", "Italy", "Portugal", 
+                         "Slovakia", "Spain", "Switzerland", "Turkey"))
+
+# Summary statistics for northen vs southern Europe
+direction_index <- duplicated(eutop50$track_uri) | duplicated(eutop50$track_uri, fromLast = T)
+direction_stats <- eutop50[!direction_index, ] %>%
+  group_by(direction) %>%
+  summarise(sd = sd(valence, na.rm = T), se = sd/sqrt(n()),valence = mean(valence, na.rm = T))
+
+#Conducting t-test
+t.test(valence ~ direction, data=eutop50[!direction_index, ])
+
+# Violin plot with means and SE-errorbars
+ggplot(eutop50[!direction_index,], aes(y = valence,x = direction)) +
+  geom_violin(alpha = 0.6) +
+  geom_jitter(size = 1, alpha = 0.5, width = 0.15) +
+    geom_errorbar(data = direction_stats, width = .03, aes(ymin = valence-se, ymax = valence+se), colour = "darkgrey") +
+    geom_point(data = direction_stats, aes(y = valence,x = direction), shape = 21, size = 3, fill = "black", color = "black") +
+  theme(axis.text.x = element_text(size = 12)) +
+  scale_x_discrete(name = "", labels = c("Southern Europe", "Northern Europe") ) +
+  ylab("Valence")
+```
+
+Although the distribution indicates a slight trend towards higher valence music in southern and lower valence music in northern Europe these differences are far away from being significant. Looking at the map above, this is not surprising. Taken together, while the Portuguese Saudade still reigns the country, there is no difference between north and south in Europe.
+
+
+## Is the nation-wide emotional valence of chart music in European countries related to the life satisfaction of its citizens?
+
+Musical taste has been found to be related to various personality characteristics (e.g. [here](http://www.stat.ufl.edu/STA%204702/Spring%2007/Rentfrow&Gosling.pdf) ). It therefore seems plausible to assume that on a national scale, differences in emotional valence of chart music (reflecting musical taste on a national scale) may be explained by individual differences in the population. Particularly, I wanted to test the assumption that the differences in emotional valence are explained by the life satisfaction of the country. To this end, I retrieved open access data from [OECD Better Life Index](www.oecdbetterlifeindex.org/). The Better Life Index (BLI) assesses the general life satisfaction of citizens in various countries around the globe by using a set of indicators (see link above). The question now was, whether the BLI score would predict individual differences in emotional valence across Europe?
+
+``` {r, echo=F, error=F, message=F, warning=FALSE, fig.height = 4, fig.width = 10}
+# loading Better Life Index (bli) 
+bli<- read.csv("~/Documents/Data Science Projects/Spotify/bli.csv", stringsAsFactors = F) 
+
+# wrangling to make tidy
+bli <- bli %>%
+  group_by(Country, Indicator) %>%
+  summarise(avg = mean(Value, na.rm = T)) %>%
+  spread(Indicator, avg)
+
+# left join on aggregated music data
+satisfaction_music <- eutop50[!direction_index, ] %>%
+  group_by(playlist_name) %>%
+  summarise(valence_mean = mean(valence, na.rm = T)) %>%
+  left_join(bli[,c(1,14)], by = c("playlist_name" = "Country"))
+
+summary(lm(valence_mean ~ `Life satisfaction`, data = satisfaction_music))
+
+# scatterplot with loess regression
+library(ggplot2)
+ggplot(data=satisfaction_music, aes(x = `Life satisfaction`, y = valence_mean, label = playlist_name)) +
+  geom_label() +
+  stat_smooth()
+```
+
+The answer is no. Although Portugal and Spain are again promising candidates for a linear relationship, the mean valence scores of the unique top 50 chart tracks across all contries are not predicted by a country's life satisfaction. Looking at the countries with lower scores on the life satisfaction index, there appears to be a linear relationship, however, countries at the very top of the index show a greater variability in mean valence scores. One group of countries (Austria, Sweden, Netherlands and Denmark) show a pronounced preference for positively valenced music, whereas countries like Finland, Norway or Czech Republic who also score high on the life satisfaction index exhibit lower mean valence scores
+
+In this post I wanted to do two things: First, showcasing the possibilities of web data sentiment analysis for research purposes, highlighting that freely available data may be harnessed to answer pertinent research questions, and second, show how you can do this. You can go through my code written in R for this post [here](my post), or if you need a step by step tutorial on how to use spotifyr, you find that [here](https://github.com/charlie86/spotifyr).
+
+In a following blog post, I will examine some of the psychometric properties of spotify features. Spotify claims to have a score that reveals the emotional positivity and negativity of a musical piece, but does this score really reflect how people perceive the music? Find out more in the second part. 
+
+
+
+
+

@@ -1,7 +1,7 @@
 ---
 title: Hierarchical clustering of musical taste
-author: ~
-date: '2015-08-20'
+author: Paul Elvers
+date: '2017-10-20'
 slug: hierachical-clustering
 categories: [R]
 tags: [Rstats, data mining, hierarchical clustering]
@@ -24,8 +24,8 @@ div.blue pre.r { background-color:WhiteSmoke; }
 <div class = "blue">
 ```{r include=FALSE}
 library(dplyr)
-musical_taste<-as_tibble(read.csv2("/Users/paulelvers/Documents/GitHub/blogdown_site/content/ex_clust.csv"))
-musical_taste<-musical_taste[2:6]
+musical_taste <- as_tibble(read.csv2("/Users/paulelvers/Documents/GitHub/blogdown_site/content/ex_clust.csv"))
+musical_taste <- musical_taste[2:6]
 ```
 ```{r echo=FALSE}
 print(musical_taste)
@@ -45,8 +45,8 @@ The distance matrix was then passed to the hierarchical clustering algorithm (us
 
 # Applying the clustering algorithm
 dist.mat %>%
-hclust(method ='ward') %>%  #applying hierarchical clustering to distance matrix
-plot(hang=-1) # plot dist cluster, labels at the same level
+hclust(method = 'ward') %>%  #applying hierarchical clustering to distance matrix
+plot(hang = -1) # plot dist cluster, labels at the same level
 
 # Determining the optimal number of clusters
 library(NbClust)
@@ -54,8 +54,8 @@ NbClust(data = muscal_taste , diss = NULL, distance = "euclidean",
         min.nc = 2, max.nc = 15, method = "ward", index = "all")
 
 # Partition the data according to the cluster solution
-groups=cutree(dist.cluster, k=3)  
-rect.hclust(dist.cluster, k=3,border='red')
+groups <- cutree(dist.cluster, k = 3)  
+rect.hclust(dist.cluster, k = 3, border = 'red')
 
 ```
 
@@ -64,7 +64,7 @@ The figure below shows a cluster-dendrogram of the hierarchical agglomeration, w
 ```{r fig.width=6, fig.height=4,echo=FALSE}
 library(png)
 library(grid)
-img <- readPNG("/Users/paulelvers/Desktop/cluster01.png")
+img <- readPNG("/Users/paulelvers/Documents/GitHub/media/cluster01.png")
  grid.raster(img)
 ```
 
@@ -73,7 +73,7 @@ Following the clustering of participants into three groups their specific profil
 ```{r fig.width=6, fig.height=4,echo=FALSE}
 library(png)
 library(grid)
-img <- readPNG("/Users/paulelvers/Desktop/profiles01.png")
+img <- readPNG("/Users/paulelvers/Documents/GitHub/media/profiles01.png")
  grid.raster(img)
 ```
 

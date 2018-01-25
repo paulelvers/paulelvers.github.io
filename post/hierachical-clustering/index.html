@@ -14,7 +14,7 @@
 
 
   
-  <meta name="author" content="" />
+  <meta name="author" content="Paul Elvers" />
   <meta name="description" content="Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics." />
 
   
@@ -192,7 +192,7 @@
   <section class="main post-detail">
     <header class="post-header">
       <h1 class="post-title">Hierarchical clustering of musical taste</h1>
-      <p class="post-meta">@ · Aug 20, 2015 · 4 min read</p>
+      <p class="post-meta">@Paul Elvers · Oct 20, 2017 · 4 min read</p>
     </header>
     <article class="post-content"><p>Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics.</p>
 <p>The multiple existing clustering methods can be roughly divided into two groups: Those where the number of clusters is pre-defined (e.g. in k-means clustering) and thoses where the number is defined by the algorithm (and additional heuristics). One approach belonging to the latter is hierarchical clustering, which is useful, when the number and structure of clusters is unknown. An agglomerative hierarchical clustering algorithm for example starts with each observation unit as one cluster, then it groups the two most similar objects into a cluster of two, then a cluster of two into a cluster of four and so on, until all objects are combined in one big cluster. The advantage of hierarchical clusering is that the number of clusters is not predefined but instead evluated based on the data structure and the output of the clustering procedure.</p>
@@ -223,8 +223,8 @@ dist(method = &#39;euclidean&#39;) %&gt;%  # compute euclidean distance matrix</
 <p>The distance matrix was then passed to the hierarchical clustering algorithm (using the hclust() function from the stats pakage) and the result was plotted. After inspecting the plot and applying additional heuristics (with the NbClust function), the optimal number of clusters was determined to be three.</p>
 <pre class="r"><code># Applying the clustering algorithm
 dist.mat %&gt;%
-hclust(method =&#39;ward&#39;) %&gt;%  #applying hierarchical clustering to distance matrix
-plot(hang=-1) # plot dist cluster, labels at the same level
+hclust(method = &#39;ward&#39;) %&gt;%  #applying hierarchical clustering to distance matrix
+plot(hang = -1) # plot dist cluster, labels at the same level
 
 # Determining the optimal number of clusters
 library(NbClust)
@@ -232,8 +232,8 @@ NbClust(data = muscal_taste , diss = NULL, distance = &quot;euclidean&quot;,
         min.nc = 2, max.nc = 15, method = &quot;ward&quot;, index = &quot;all&quot;)
 
 # Partition the data according to the cluster solution
-groups=cutree(dist.cluster, k=3)  
-rect.hclust(dist.cluster, k=3,border=&#39;red&#39;)</code></pre>
+groups &lt;- cutree(dist.cluster, k = 3)  
+rect.hclust(dist.cluster, k = 3, border = &#39;red&#39;)</code></pre>
 <p>The figure below shows a cluster-dendrogram of the hierarchical agglomeration, which starts at the bottom with each case as a cluster until the top where all cases are merged into one cluster. The red lines mark the division of the data set into three clusters.</p>
 <p><img src="/post/hierachicalclustering_files/figure-html/unnamed-chunk-5-1.png" width="576" /></p>
 <p>Following the clustering of participants into three groups their specific profiles of musical taste were analyzed. The following figure displays the three profiles of musical taste indicating the mean frequency of listening (and 95% CIs) for each of the six dimensions.</p>
@@ -255,7 +255,7 @@ rect.hclust(dist.cluster, k=3,border=&#39;red&#39;)</code></pre>
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.This post was published <strong>869</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.
       </p>
     </footer>
     

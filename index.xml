@@ -18,17 +18,23 @@
       <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>I apply data science tools to learn about people’s behavior,
-currently at Goldmsiths, University of London and University of Hamburg.
-Before I was research fellow at Max Planck Institute for Empirical Aesthetics and
-visiting researcher at University of Oxford.
-You can download my CV here.</description>
+      <description>This is my personal blog where I write about data science projects focussing on music. The blog was build in R using blogdown, which provides an easy way to host static websites based on R markdown and Hugo. The webiste uses the Hugo Nuo Theme and is hosted on GitHub.
+About me I am a Postdoctoral researcher, who applies data science &amp;amp; psychology tools to learn about people’s behavior. Currently I work at Goldmsiths, University of London and University of Hamburg.</description>
+    </item>
+    
+    <item>
+      <title>Sentiment analysis of musical taste: a cross-European comparison</title>
+      <link>/post/emotionsineuropeanmusic/</link>
+      <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/emotionsineuropeanmusic/</guid>
+      <description>In this post I want to give a short introduction into sentiment analysis of web data in R. I analyzed the emotional valence of music from top 50 charts across Europe by retrieving data from Spotify’s web API. I will first give you a short intro and then present the results.</description>
     </item>
     
     <item>
       <title>Hierarchical clustering of musical taste</title>
       <link>/post/hierachical-clustering/</link>
-      <pubDate>Thu, 20 Aug 2015 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 20 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>/post/hierachical-clustering/</guid>
       <description>Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics.</description>

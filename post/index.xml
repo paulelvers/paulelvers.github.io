@@ -7,15 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.</copyright>
-    <lastBuildDate>Thu, 20 Aug 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Sentiment analysis of musical taste: a cross-European comparison</title>
+      <link>/post/emotionsineuropeanmusic/</link>
+      <pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/emotionsineuropeanmusic/</guid>
+      <description>In this post I want to give a short introduction into sentiment analysis of web data in R. I analyzed the emotional valence of music from top 50 charts across Europe by retrieving data from Spotify’s web API. I will first give you a short intro and then present the results.</description>
+    </item>
+    
+    <item>
       <title>Hierarchical clustering of musical taste</title>
       <link>/post/hierachical-clustering/</link>
-      <pubDate>Thu, 20 Aug 2015 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 20 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>/post/hierachical-clustering/</guid>
       <description>Clustering is an important data mining tool for statistics and machine learning. It belongs to the class of unsupervised learning algorithms and its main function is to group together objects that share similar features into clusters. Here I present a short demonstration of how a clustering algorithm can be applied in R and what it may be used for. To this end, I present a real use case from a research project on musical taste I conducted at the Max Planck Institute for Empirical Aesthetics.</description>

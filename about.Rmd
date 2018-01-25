@@ -5,13 +5,21 @@ layout: "about"
 menu: "main"
 weight: 40
 ---
+This is my personal blog where I write about data science projects focussing on music. The blog was build in R using [blogdown](https://github.com/rstudio/blogdown), which provides an easy way to host static websites based on R markdown and Hugo. The webiste uses the [Hugo Nuo Theme](https://themes.gohugo.io/hugo-nuo/) and is hosted on GitHub.
 
-I apply data science tools to learn about people’s behavior,  
-currently at Goldmsiths, University of London and University of Hamburg.  
-Before I was research fellow at Max Planck Institute for Empirical Aesthetics and  
-visiting researcher at University of Oxford.
+# About me
+I am a Postdoctoral researcher, who applies data science & psychology tools to learn about people’s behavior.
+Currently I work at Goldmsiths, University of London and University of Hamburg.
 
-You can download my CV [here](https://www.google.com).
+I was research fellow at the Max Planck Institute for Empirical Aesthetics and visiting researcher at University of Oxford.
+
+You can find most of my publications on [ResearchGate](https://www.researchgate.net/profile/Paul_Elvers) and read more about me on [LinkedIn](https://www.linkedin.com/in/paul-elvers/). 
+
+Feel free to get in touch: "p.h.elvers at gmail.com"
+
+
+
+
 
 
 
