@@ -105,7 +105,7 @@ Let's begin with Spain vs. Portugal. A Portuguese might characterize a Spanish p
 
 "The famous saudade of the Portuguese is a vague and constant desire for something that does not and probably cannot exist, for something other than the present, a turning towards the past or towards the future; not an active discontent or poignant sadness but an indolent dreaming wistfulness."[*](https://en.wikipedia.org/wiki/Saudade)
 
-Thus, one should have reason to assume that they may also enjoy different kinds of music. Since chart music generally has a great overlap between nations, I excluded all tracks that appeared in both charts and conducted a simple two-sided Student's t-test to compare means of the two groups.
+Thus, one should have reason to assume that they may also enjoy different kinds of music. Since chart music generally has a great overlap between nations, I excluded all tracks that appeared in both charts and conducted a simple two-sided t-test to compare means of the two groups.
 ```{r, echo=F, message=F, fig.height = 4, fig.width = 10}
 # loading libraries
 ### --------------------------------------------------
