@@ -80,4 +80,4 @@ The "engaged listeners" cluster shows the greatest musical engagement with four 
 
 In summary, the agglomerative hierarchical clustering approach was useful here because the exact number of clusters was previously unknown. It yielded a typology of music listeners with distinct profiles of musical engagement. These types were further analyzed in subsequent analyses in terms of individual differences. They may have also been used for marketing purposes, i.e. to inform decision making processes or target specific audiences and do already provide basic information about how musical taste is configured. 
 
-If you found this short demonstration of a hierchical clustering algorithm interesting you can find more information about it in the full publication [here](https://www.frontiersin.org/articles/10.3389/fpsyg.2015.01252/full).
+If you found this short demonstration of a hierchical clustering algorithm interesting you can find more information about it in the full publication [here](https://www.frontiersin.org/articles/10.3389/fpsyg.2015.01252/full). Note that the two figures above were previously published in this publication in the journal Frontiers in Psychology.

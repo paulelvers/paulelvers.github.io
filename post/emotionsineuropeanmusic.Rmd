@@ -50,7 +50,7 @@ eutop50$playlist_name <- str_replace_all(eutop50$playlist_name, "UnitedKingdom",
 
 ```
 
-```{r, echo=FALSE,  error=F, message=F, warning=FALSE, fig.height = 12, fig.width = 10}
+```{r, echo=FALSE,  error=F, message=F, warning=FALSE, fig.height = 14, fig.width = 12}
 # loading libraries
 ### --------------------------------------------------
 library(highcharter)
@@ -83,7 +83,7 @@ hcmap("custom/europe", data = eu_plot, value = "valence",
 
 Above you see a map of Europe. For each country the mean valence score is displayed and indicated by the coloring of the country. To make this more interpretable, the scores have been scaled from -10 to 10. Yellow means that the chart music in this country is very positive, blue means it is rather negative. We can already observe that there are quite some differences between the countries. Portugal's chart music for instance is sadder than Spain's charts. And, perhaps surprisingly, Turkey's chart music is also very positive. The Baltic states appear to prefer rather sad music, while the middle European countries are somewhere in between. Let's look at the five highest and lowest scoring countries:
 
-```{r  echo=F, error=F, message=F,}
+```{r  echo = F, error = F, message = F}
 eutop50 %>%
   group_by(playlist_name) %>%
   summarise(mean_valence = mean(valence)) %>%
@@ -106,7 +106,7 @@ Let's begin with Spain vs. Portugal. A Portuguese might characterize a Spanish p
 "The famous saudade of the Portuguese is a vague and constant desire for something that does not and probably cannot exist, for something other than the present, a turning towards the past or towards the future; not an active discontent or poignant sadness but an indolent dreaming wistfulness."[*](https://en.wikipedia.org/wiki/Saudade)
 
 Thus, one should have reason to assume that they may also enjoy different kinds of music. Since chart music generally has a great overlap between nations, I excluded all tracks that appeared in both charts and conducted a simple two-sided t-test to compare means of the two groups.
-```{r, echo=F, message=F, fig.height = 4, fig.width = 10}
+```{r, echo = F, message = F, fig.height = 5, fig.width = 6}
 # loading libraries
 ### --------------------------------------------------
 library(ggplot2)
@@ -126,11 +126,12 @@ balearic_stats<-balearic[!balearic_index, ] %>%
   summarise(sd = sd(valence), se = sd/sqrt(n()), valence = mean(valence))
 
 # Violin plot with means and SE-errorbars
-ggplot(balearic[!balearic_index, ], aes(y = valence, x = playlist_name)) +
+ggplot(balearic[!balearic_index, ], aes(y = valence, x = playlist_name, fill = playlist_name)) +
   geom_violin(alpha = 0.6) +
-  geom_jitter(size = 1,alpha = 0.5, width = 0.1) +
-  theme(axis.text.x = element_text(size = 12)) +
-  geom_errorbar(data = balearic_stats, width = 0.03, aes(ymin = valence - se, ymax = valence + se), colour = "darkgrey") +
+  geom_jitter(size = 1,alpha = 0.5, width = 0.1, shape = 21, fill = "white") +
+  scale_fill_manual(values=c("#342D7E", "#FDD017")) +
+  theme(axis.text.x = element_text(size = 12), panel.background = element_blank(), legend.position = "none") +
+  geom_errorbar(data = balearic_stats, width = 0.03, aes(ymin = valence - se, ymax = valence + se), colour = "black") +
   geom_point(data = balearic_stats, aes(y = valence,x = playlist_name), shape = 21, size = 3, fill = "black", color = "black") +
   xlab("") +
   ylab("Valence") 
@@ -138,7 +139,7 @@ ggplot(balearic[!balearic_index, ], aes(y = valence, x = playlist_name)) +
 
 It appears that Portuguese chart music is indeed more negative in valence than Spanish chart music. This is suggested by the distributions shown by the violin plot as well as the statistics of the t-test. Let's take a look at the actual songs. First, I am going to print out songs of the Portuguese chart music with lowest valence scores.
 
-```{r  echo=F, error=F, message=F,}
+```{r  echo = F, error = F, message = F}
 balearic[!balearic_index, ] %>%
   filter(playlist_name == "Portugal") %>%
   left_join(unique(eutop50[,3:6], by="track_uri")) %>%
@@ -148,7 +149,7 @@ balearic[!balearic_index, ] %>%
 
 Some familiar names but also quite a few Portuguese artists appear here. Having a first listen to it (I assume you'll be able to copy and paste track and artist name into your preferred music listening app), the songs do indeed appear to be rather sad. Let's take a look at the Spanish chart music with the highest valence scores next.
 
-```{r  echo=F, error=F, message=F,}
+```{r  echo = F, error = F, message = F}
 balearic[!balearic_index, ] %>%
   filter(playlist_name == "Spain") %>%
   left_join(unique(eutop50[,3:6], by="track_uri")) %>%
@@ -160,7 +161,7 @@ Shakira! As expected, the high valence tracks in Spain contain a lot of Spanish.
 
 Ok. Let's take a look at some other stereotypes: What about northern vs. southern Europe? One common assumption is that people in northern Europe are less outgoing, maybe sometimes even sadder and definitely more introverted. Is this really the case? First, I had to think about how to divide Europe. A pretty straightforward approach is taking a geographical landmark as demarcation: Every country north of the Alps was assigned to northern Europe and every country south to southern Europe. Bear with me, this may not be the best way to divide it but it is one way of doing it. I applied the same procedure as in the first example and included only music pieces that are unique music pieces.
 
-```{r, echo=F, error=F, message=F, warning=FALSE, fig.height = 4, fig.width = 10}
+```{r, echo = F, error = F, message = F, warning = FALSE, fig.height = 5, fig.width = 6}
 # loading libraries
 ### --------------------------------------------------
 library(forcats)
@@ -186,24 +187,25 @@ direction_stats <- eutop50[!direction_index, ] %>%
 t.test(valence ~ direction, data=eutop50[!direction_index, ])
 
 # Violin plot with means and SE-errorbars
-ggplot(eutop50[!direction_index,], aes(y = valence,x = direction)) +
+ggplot(eutop50[!direction_index,], aes(y = valence,x = direction, fill=direction)) +
   geom_violin(alpha = 0.6) +
-  geom_jitter(size = 1, alpha = 0.5, width = 0.15) +
-    geom_errorbar(data = direction_stats, width = .03, aes(ymin = valence-se, ymax = valence+se), colour = "darkgrey") +
-    geom_point(data = direction_stats, aes(y = valence,x = direction), shape = 21, size = 3, fill = "black", color = "black") +
-  theme(axis.text.x = element_text(size = 12)) +
-  scale_x_discrete(name = "", labels = c("Southern Europe", "Northern Europe") ) +
+  geom_jitter(size = 1, alpha = 0.5, shape = 21, width = 0.15, fill = "white") +
+  scale_fill_manual(values=c("#FDD017","#342D7E")) +
+  geom_errorbar(data = direction_stats, width = .03, aes(ymin = valence-se, ymax = valence+se), colour = "black") +
+  geom_point(data = direction_stats, aes(y = valence,x = direction), shape = 23, size = 3, fill = "black", color = "black") +
+  theme(axis.text.x = element_text(size = 12), panel.background = element_blank(), legend.position = "none") +
+  scale_x_discrete(name = "", labels = c("Southern Europe", "Northern Europe")) +
   ylab("Valence")
 ```
 
-Although the distribution indicates a slight trend towards higher valence music in southern and lower valence music in northern Europe these differences are far away from being significant. Looking at the map above, this is not surprising. Taken together, while the Portuguese Saudade still reigns the country, there is no difference between north and south in Europe.
+Although the distribution indicates a slight trend towards higher valence music in southern and lower valence music in northern Europe these differences are far from being significant. Looking at the map above, this is not surprising. Taken together, while the Portuguese Saudade still reigns the country, there is no difference between north and south in Europe.
 
 
 ## Is the nation-wide emotional valence of chart music in European countries related to the life satisfaction of its citizens?
 
 Musical taste has been found to be related to various personality characteristics (e.g. [here](http://www.stat.ufl.edu/STA%204702/Spring%2007/Rentfrow&Gosling.pdf) ). It therefore seems plausible to assume that on a national scale, differences in emotional valence of chart music (reflecting musical taste on a national scale) may be explained by individual differences in the population. Particularly, I wanted to test the assumption that the differences in emotional valence are explained by the life satisfaction of the country. To this end, I retrieved open access data from [OECD Better Life Index](www.oecdbetterlifeindex.org/). The Better Life Index (BLI) assesses the general life satisfaction of citizens in various countries around the globe by using a set of indicators (see link above). The question now was, whether the BLI score would predict individual differences in emotional valence across Europe?
 
-``` {r, echo=F, error=F, message=F, warning=FALSE, fig.height = 4, fig.width = 10}
+``` {r, echo = F, error = F, message = F, warning = F, fig.height = 5, fig.width = 6}
 # loading Better Life Index (bli) 
 bli<- read.csv("~/Documents/Data Science Projects/Spotify/bli.csv", stringsAsFactors = F) 
 
@@ -225,7 +227,7 @@ summary(lm(valence_mean ~ `Life satisfaction`, data = satisfaction_music))
 library(ggplot2)
 ggplot(data=satisfaction_music, aes(x = `Life satisfaction`, y = valence_mean, label = playlist_name)) +
   geom_label() +
-  stat_smooth()
+  stat_smooth(method = "lm")
 ```
 
 The answer is no. Although Portugal and Spain are again promising candidates for a linear relationship, the mean valence scores of the unique top 50 chart tracks across all contries are not predicted by a country's life satisfaction. Looking at the countries with lower scores on the life satisfaction index, there appears to be a linear relationship, however, countries at the very top of the index show a greater variability in mean valence scores. One group of countries (Austria, Sweden, Netherlands and Denmark) show a pronounced preference for positively valenced music, whereas countries like Finland, Norway or Czech Republic who also score high on the life satisfaction index exhibit lower mean valence scores

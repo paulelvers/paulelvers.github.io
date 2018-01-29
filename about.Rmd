@@ -9,13 +9,11 @@ This is my personal blog where I write about data science projects focussing on 
 
 # About me
 I am a Postdoctoral researcher, who applies data science & psychology tools to learn about people’s behavior.
-Currently I work at Goldsmiths, University of London and the University of Hamburg.
-
-I was a research fellow at the Max Planck Institute for Empirical Aesthetics and a visiting researcher at the University of Oxford.
+Currently I work at Goldsmiths, University of London and the University of Hamburg. Previously I was a research fellow at the Max Planck Institute for Empirical Aesthetics and a visiting researcher at the University of Oxford.
 
 You can find most of my publications on [ResearchGate](https://www.researchgate.net/profile/Paul_Elvers) and read more about me on [LinkedIn](https://www.linkedin.com/in/paul-elvers/). 
 
-Feel free to get in touch: "p.h.elvers at gmail.com"
+Feel free to get in touch: p.h.elvers at gmail dot com
 
 
 
