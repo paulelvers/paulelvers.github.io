@@ -59,7 +59,7 @@ library(scales)
 # Mean valence score for each country
 map_stats<-eutop50 %>%
   group_by(playlist_name) %>%
-  summarise(val = mean(valence))
+  summarise(val = mean(valence, na.rm = T))
 colnames(map_stats)<-c("Country","valence")
 
 # getting basic map of Europe
