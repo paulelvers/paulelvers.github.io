@@ -17,10 +17,10 @@ library(spotifyr)
 
 # Setting system requirements for accessing Spotify API
 ### --------------------------------------------------
-Sys.setenv(SPOTIFY_CLIENT_ID = '240c11ba18104666b25dca20cf191be5')
-Sys.setenv(SPOTIFY_CLIENT_SECRET = '55154bfe1d784c7bb24290b9cbceeb5c')
-access_token <- get_spotify_access_token(client_id = Sys.getenv('SPOTIFY_CLIENT_ID'), 
-                                         client_secret = Sys.getenv('SPOTIFY_CLIENT_SECRET'))
+# Sys.setenv(SPOTIFY_CLIENT_ID = '240c11ba18104666b25dca20cf191be5')
+# Sys.setenv(SPOTIFY_CLIENT_SECRET = '55154bfe1d784c7bb24290b9cbceeb5c')
+# access_token <- get_spotify_access_token(client_id = Sys.getenv('SPOTIFY_CLIENT_ID'), 
+#                                          client_secret = Sys.getenv('SPOTIFY_CLIENT_SECRET'))
 
 # Retrieving data from Spotify
 ### --------------------------------------------------
@@ -28,25 +28,25 @@ access_token <- get_spotify_access_token(client_id = Sys.getenv('SPOTIFY_CLIENT_
 # Retrieving user playlists
 # Top 50 Charts of all European countries were added to the user profile before
 # The function loads all songs from the playlist
-eutop50 <- get_user_playlists('delospro') %>%
-  get_playlist_tracks()
+# eutop50 <- get_user_playlists('delospro') %>%
+# get_playlist_tracks()
 
 # retrieving audio features for all musical pieces retrieved in the previous step
-features <- get_track_audio_features(eutop50)
+# features <- get_track_audio_features(eutop50)
 
-eutop50<-left_join(eutop50,features,by='track_uri')
+# eutop50<-left_join(eutop50,features,by='track_uri')
 
 # Some string preprocessing
 
 # remove "Top 50"
-library(tm)
-eutop50$playlist_name<-removeWords(eutop50$playlist_name,c("Top","50", " "))
+# library(tm)
+# eutop50$playlist_name<-removeWords(eutop50$playlist_name,c("Top","50", " "))
 # Change country names
-library(stringr)
-eutop50$playlist_name <- str_replace_all(eutop50$playlist_name, "CzechRepublic", "Czech Republic")
-eutop50$playlist_name <- str_replace_all(eutop50$playlist_name, "UnitedKingdom", "United Kingdom")
+# library(stringr)
+# eutop50$playlist_name <- str_replace_all(eutop50$playlist_name, "CzechRepublic", "Czech Republic")
+# eutop50$playlist_name <- str_replace_all(eutop50$playlist_name, "UnitedKingdom", "United Kingdom")
 
-
+eutop50 <- read.csv2("~/Documents/Data Science Projects/Spotify/euro2018-01-24.csv")
 
 ```
 
@@ -142,9 +142,10 @@ It appears that Portuguese chart music is indeed more negative in valence than S
 ```{r  echo = F, error = F, message = F}
 balearic[!balearic_index, ] %>%
   filter(playlist_name == "Portugal") %>%
-  left_join(unique(eutop50[,3:6], by="track_uri")) %>%
+  left_join(unique(eutop50[,4:6], by="track_uri")) %>%
   select(valence, track_name, artist_name) %>%
-  arrange(valence)
+  arrange(valence) %>%
+  head(n = 5)
 ```
 
 Some familiar names but also quite a few Portuguese artists appear here. Having a first listen to it (I assume you'll be able to copy and paste track and artist name into your preferred music listening app), the songs do indeed appear to be rather sad. Let's take a look at the Spanish chart music with the highest valence scores next.
@@ -152,9 +153,10 @@ Some familiar names but also quite a few Portuguese artists appear here. Having 
 ```{r  echo = F, error = F, message = F}
 balearic[!balearic_index, ] %>%
   filter(playlist_name == "Spain") %>%
-  left_join(unique(eutop50[,3:6], by="track_uri")) %>%
+  left_join(unique(eutop50[,4:6], by="track_uri")) %>%
   select(valence, track_name, artist_name) %>%
-  arrange(desc(valence))
+  arrange(desc(valence)) %>%
+  head(n = 5)
 ```
 
 Shakira! As expected, the high valence tracks in Spain contain a lot of Spanish. Indeed, the ten highest valence pieces do not contain a single song in another language than Spanish. What strikes me most is that almost all pieces have a pronounced syncopated rhythmic structure that is typical for Latin American music.
