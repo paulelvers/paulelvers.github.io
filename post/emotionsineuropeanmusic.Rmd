@@ -4,8 +4,6 @@ author: "Paul Elvers"
 date: '2018-01-12'
 output: html_document
 ---
-In this post I want to give a short introduction into sentiment analysis of web data in R. I analyzed the emotional valence of music from top 50 charts across Europe by retrieving data from Spotify's web API. I will first give you a short intro and then present the results. If you are more interested in how to do this, you'll find a link to the code written in R at the bottom.
-
 As music obviously induces various emotional states, one pertinent research question is why some folks enjoy listening to sad music? Well, although sad music seems to really make some listeners sad, emotional states when listening to sad music are oftentimes more complex and may also involve positive emotions such as nostalgia and peacefulness. Furthermore, certain personality characteristics were found to be linked to the enjoyment of sad music, e.g. "openness to experience" and "empathy" [(see this study)](https://jyx.jyu.fi/dspace/bitstream/handle/123456789/48421/vuoskoskijketal311.full.pdf?sequence=1). But if there are individual differences in the enjoyment of sad music, may there also be cultural differences between nations? There definitely are some cultures that are supposed to particularly enjoy sad music (take the Portuguese [Fado](https://www.youtube.com/watch?v=ARS7Zi-Zpkw) for example). But do these cultural assumptions of regional musical taste in fact exist?
 
 By retrieving audio feature information from the Spotify API from "top 50 charts" of 25 European countries, I investigated and compared the emotional characteristics of nationwide musical taste in Europe. Spotify provides a set of features that gives information about musical pieces, that may be assessed through the [Spotify Web API](https://developer.spotify.com/web-api/). One of the musical features (see the full list [here](https://developer.spotify.com/web-api/get-audio-features/)) comprises a valence score that indicates the emotional positivity or negativity of the musical piece on a range from zero (very negative) to one (very positive). For data retrieval I used the really helpful [spotifyr](https://cran.r-project.org/web/packages/spotifyr/index.html) package. For the map below I used the [Highcharter](http://jkunst.com/highcharter/) package that provides an easy to use R interface for the Highcharts JavaScript graphics library.
@@ -83,19 +81,20 @@ hcmap("custom/europe", data = eu_plot, value = "valence",
 
 Above you see a map of Europe. For each country the mean valence score is displayed and indicated by the coloring of the country. To make this more interpretable, the scores have been scaled from -10 to 10. Yellow means that the chart music in this country is very positive, blue means it is rather negative. We can already observe that there are quite some differences between the countries. Portugal's chart music for instance is sadder than Spain's charts. And, perhaps surprisingly, Turkey's chart music is also very positive. The Baltic states appear to prefer rather sad music, while the middle European countries are somewhere in between. Let's look at the five highest and lowest scoring countries:
 
+Top 5 Countries with highest valence:
 ```{r  echo = F, error = F, message = F}
-eutop50 %>%
-  group_by(playlist_name) %>%
-  summarise(mean_valence = mean(valence)) %>%
-  top_n(5, mean_valence) %>%
-  arrange(desc(mean_valence))
+eu_plot %>%
+  select(Country, valence) %>%
+  arrange(desc(valence)) %>%
+  head(n = 5)
+```
 
-eutop50 %>%
-  group_by(playlist_name) %>%
-  summarise(mean_valence = mean(valence)) %>%
-  top_n(-5, mean_valence) %>%
-  arrange(mean_valence)
-
+Top 5 Countries with lowest valence:
+```{r  echo = F, error = F, message = F}
+eu_plot %>%
+  select(Country, valence) %>%
+  arrange(valence) %>%
+  head(n = 5)
 ```
 
 
