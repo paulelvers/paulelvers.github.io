@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Paul Elvers</title>
+    <title>Dr. Paul Elvers</title>
     <link>/</link>
-    <description>Recent content on Paul Elvers</description>
+    <description>Recent content on Dr. Paul Elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.</copyright>
@@ -18,8 +18,20 @@
       <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>This is my personal blog where I write about data science projects focussing on music. The blog was build in R using blogdown, which provides an easy way to host static websites based on R markdown and Hugo. The website uses the Hugo Nuo Theme and is hosted on GitHub.
-About me I am a Postdoctoral researcher, who applies data science &amp;amp; psychology tools to learn about people’s behavior. Currently I work at Goldsmiths, University of London and the University of Hamburg.</description>
+      <description>I am a data scientist and former researcher in music cognition and empirical aesthetics. This is my personal blog where I write about data science projects, mostly focussing on music. The blog was build in R using blogdown, which provides an easy way to host static websites based on R markdown and Hugo. The website uses the Hugo Nuo Theme.
+Feel free to get in touch: p.h.elvers at gmail dot com</description>
+    </item>
+    
+    <item>
+      <title>Publications</title>
+      <link>/publications/</link>
+      <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>/publications/</guid>
+      <description>Elvers, P., &amp;amp; Steffens, J. (2017). The Sound of Success: Investigating Cognitive and Behavioral Effects of Motivational Music in Sports. Frontiers in Psychology, 8(2026).
+Elvers, P., Fischinger, T., &amp;amp; Steffens, J. (2017). Music listening as self-enhancement: Effects of empowering music on explicit and implicit momentary self-esteem. Psychology of Music, 46(3), 307 - 325.
+Elvers, P. (2016). Songs for the Ego: Theorizing Musical Self-Enhancement. Frontiers in Psychology, 7(2).
+Greb, F., Elvers, P.</description>
     </item>
     
     <item>
