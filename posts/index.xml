@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on paul elvers</title>
-    <link>http://paulelvers.com/posts/</link>
+    <link>paulelvers.com/posts/</link>
     <description>Recent content in Posts on paul elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Paul Elvers 2020</copyright>
-    <lastBuildDate>Mon, 14 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="paulelvers.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SettingWithCopyWarning</title>
-      <link>http://paulelvers.com/posts/pandas-things/</link>
+      <link>paulelvers.com/posts/pandas-things/</link>
       <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://paulelvers.com/posts/pandas-things/</guid>
+      <guid>paulelvers.com/posts/pandas-things/</guid>
       <description>Pandas is undoubtedly one of the most important Python libraries in data science and machine learning. Many practitioners in the field are using it on a daily basis. But even as an experienced user, you might have been puzzled by this warning: SettingWithCopyWarning. A value is trying to be set on a copy of a slice from a DataFrame. Try using .loc[row_indexer,col_indexer] = value instead.
 It could be tempting to just ignore it, especially when the code does what you wanted.</description>
     </item>

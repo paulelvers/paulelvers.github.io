@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on paul elvers</title>
-    <link>http://paulelvers.com/categories/</link>
+    <link>paulelvers.com/categories/</link>
     <description>Recent content in Categories on paul elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>© Paul Elvers 2020</copyright><atom:link href="http://paulelvers.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>© Paul Elvers 2020</copyright><atom:link href="paulelvers.com/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
