@@ -1,24 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Dr. Paul Elvers</title>
-    <link>/categories/</link>
-    <description>Recent content in Categories on Dr. Paul Elvers</description>
+    <title>Categories on paul elvers</title>
+    <link>http://paulelvers.com/categories/</link>
+    <description>Recent content in Categories on paul elvers</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.</copyright>
-    
-	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>R</title>
-      <link>/categories/r/</link>
-      <pubDate>Fri, 20 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/r/</guid>
-      <description></description>
-    </item>
-    
+    <language>en-us</language>
+    <copyright>© Paul Elvers 2020</copyright><atom:link href="http://paulelvers.com/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

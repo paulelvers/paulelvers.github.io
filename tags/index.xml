@@ -1,41 +1,37 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Dr. Paul Elvers</title>
-    <link>/tags/</link>
-    <description>Recent content in Tags on Dr. Paul Elvers</description>
+    <title>Tags on paul elvers</title>
+    <link>http://paulelvers.com/tags/</link>
+    <description>Recent content in Tags on paul elvers</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.</copyright>
-    <lastBuildDate>Fri, 20 Oct 2017 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language>
+    <copyright>© Paul Elvers 2020</copyright>
+    <lastBuildDate>Mon, 14 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Data Mining</title>
-      <link>/tags/data-mining/</link>
-      <pubDate>Fri, 20 Oct 2017 00:00:00 +0000</pubDate>
+      <title>data wrangling</title>
+      <link>http://paulelvers.com/tags/data-wrangling/</link>
+      <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/data-mining/</guid>
+      <guid>http://paulelvers.com/tags/data-wrangling/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Hierarchical Clustering</title>
-      <link>/tags/hierarchical-clustering/</link>
-      <pubDate>Fri, 20 Oct 2017 00:00:00 +0000</pubDate>
+      <title>pandas</title>
+      <link>http://paulelvers.com/tags/pandas/</link>
+      <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/hierarchical-clustering/</guid>
+      <guid>http://paulelvers.com/tags/pandas/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Rstats</title>
-      <link>/tags/rstats/</link>
-      <pubDate>Fri, 20 Oct 2017 00:00:00 +0000</pubDate>
+      <title>python</title>
+      <link>http://paulelvers.com/tags/python/</link>
+      <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/rstats/</guid>
+      <guid>http://paulelvers.com/tags/python/</guid>
       <description></description>
     </item>
     
