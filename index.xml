@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>paul elvers</title>
-    <link>paulelvers.com/</link>
+    <link>http://paulelvers.com/</link>
     <description>Recent content on paul elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Paul Elvers 2020</copyright>
-    <lastBuildDate>Mon, 14 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="paulelvers.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About Me</title>
-      <link>paulelvers.com/about/</link>
+      <link>http://paulelvers.com/about/</link>
       <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>paulelvers.com/about/</guid>
+      <guid>http://paulelvers.com/about/</guid>
       <description>Hi 👋. I am Paul. I am a data scientist/ml-engineer.
 I build recommender systems and ml-models in the digital advertising space for Tchibo, one of Germany&amp;rsquo;s biggest online retailers. Currently I am working at Smartclip, Europes lading adtech and video ad monetisation solution.
 Previously, I was a doctoral student and research fellow at MPI-EA, where I learned a lot about data &amp;amp; statistical modeling, build a model of musical self-enhancement (see my publications) and measured risk-taking behaviour in response to musical stimuli (see paper).</description>
@@ -21,10 +21,10 @@ Previously, I was a doctoral student and research fellow at MPI-EA, where I lear
     
     <item>
       <title>SettingWithCopyWarning</title>
-      <link>paulelvers.com/posts/pandas-things/</link>
+      <link>http://paulelvers.com/posts/pandas-things/</link>
       <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>paulelvers.com/posts/pandas-things/</guid>
+      <guid>http://paulelvers.com/posts/pandas-things/</guid>
       <description>Pandas is undoubtedly one of the most important Python libraries in data science and machine learning. Many practitioners in the field are using it on a daily basis. But even as an experienced user, you might have been puzzled by this warning: SettingWithCopyWarning. A value is trying to be set on a copy of a slice from a DataFrame. Try using .loc[row_indexer,col_indexer] = value instead.
 It could be tempting to just ignore it, especially when the code does what you wanted.</description>
     </item>
