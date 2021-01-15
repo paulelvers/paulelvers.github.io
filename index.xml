@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Paul Elvers 2020</copyright>
-    <lastBuildDate>Mon, 14 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Build and train multimodal models</title>
+      <link>http://paulelvers.com/posts/multimodal/</link>
+      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://paulelvers.com/posts/multimodal/</guid>
+      <description>The problem Imagine a dataframe like this:
+   id text url_to_img category weight date produced     123 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; low 6.8 2021-01-01   789 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; middle 7.1 2021-01-01   964 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; high 3.3 2021-01-01    It contains all kinds of data: numerical values, categorical values, timestamps, texts and images. Traditional ml models would face the challenge that they are specialized in a particular kind of data handling: language models in handling text (e.</description>
+    </item>
+    
     <item>
       <title>About Me</title>
       <link>http://paulelvers.com/about/</link>
@@ -16,7 +26,7 @@
       <guid>http://paulelvers.com/about/</guid>
       <description>Hi 👋. I am Paul. I am a data scientist/ml-engineer.
 I am working at Smartclip, Europe&amp;rsquo;s leading adtech and video ad monetisation solution. Previously, I built recommender systems and ml-models in the digital advertising space for Tchibo, one of Germany&amp;rsquo;s biggest online retailers.
-I was a doctoral student and research fellow at MPI-EA, where I learned a lot about data &amp;amp; statistical modeling, build a model of musical self-enhancement (see my publications) and measured risk-taking behaviour in response to musical stimuli (see paper).</description>
+I was a doctoral student and research fellow at MPI-EA, where I learned a lot about data &amp;amp; statistical modeling, built a model of musical self-enhancement (see my publications) and measured risk-taking behaviour in response to musical stimuli (see paper).</description>
     </item>
     
     <item>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Build and train multimodal models | paul elvers</title>
+
+<meta name="keywords" content="" />
+<meta name="description" content="The problem Imagine a dataframe like this:
+   id text url_to_img category weight date produced     123 &ldquo;..&rdquo; http://image&hellip; low 6.8 2021-01-01   789 &ldquo;..&rdquo; http://image&hellip; middle 7.1 2021-01-01   964 &ldquo;..&rdquo; http://image&hellip; high 3.3 2021-01-01    It contains all kinds of data: numerical values, categorical values, timestamps, texts and images. Traditional ml models would face the challenge that they are specialized in a particular kind of data handling: language models in handling text (e.">
+<meta name="author" content="">
+<link rel="canonical" href="http://paulelvers.com/posts/multimodal/" />
+<link href="http://paulelvers.com/assets/css/stylesheet.min.d1bc2b736056bd5698d770eeedc08a73bce9e6cebb30810f6f1b2c2048e46ab8.css" integrity="sha256-0bwrc2BWvVaY13Du7cCKc7zp5s67MIEPbxssIEjkarg=" rel="preload stylesheet"
+    as="style">
+
+<link rel="icon" href="http://paulelvers.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://paulelvers.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://paulelvers.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://paulelvers.com/apple-touch-icon.png">
+<link rel="mask-icon" href="http://paulelvers.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.79.0" />
+
+
+<meta property="og:title" content="Build and train multimodal models" />
+<meta property="og:description" content="The problem Imagine a dataframe like this:
+   id text url_to_img category weight date produced     123 &ldquo;..&rdquo; http://image&hellip; low 6.8 2021-01-01   789 &ldquo;..&rdquo; http://image&hellip; middle 7.1 2021-01-01   964 &ldquo;..&rdquo; http://image&hellip; high 3.3 2021-01-01    It contains all kinds of data: numerical values, categorical values, timestamps, texts and images. Traditional ml models would face the challenge that they are specialized in a particular kind of data handling: language models in handling text (e." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://paulelvers.com/posts/multimodal/" />
+<meta property="article:published_time" content="2021-01-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-15T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Build and train multimodal models"/>
+<meta name="twitter:description" content="The problem Imagine a dataframe like this:
+   id text url_to_img category weight date produced     123 &ldquo;..&rdquo; http://image&hellip; low 6.8 2021-01-01   789 &ldquo;..&rdquo; http://image&hellip; middle 7.1 2021-01-01   964 &ldquo;..&rdquo; http://image&hellip; high 3.3 2021-01-01    It contains all kinds of data: numerical values, categorical values, timestamps, texts and images. Traditional ml models would face the challenge that they are specialized in a particular kind of data handling: language models in handling text (e."/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Build and train multimodal models",
+  "name": "Build and train multimodal models",
+  "description": "The problem Imagine a dataframe like this:\n   id text url_to_img category weight date produced     123 \u0026amp;ldquo;..\u0026amp;rdquo; http://image\u0026amp;hellip; low 6.8 2021-01-01   789 …",
+  "keywords": [
+    
+  ],
+  "articleBody": "The problem Imagine a dataframe like this:\n   id text url_to_img category weight date produced     123 “..” http://image… low 6.8 2021-01-01   789 “..” http://image… middle 7.1 2021-01-01   964 “..” http://image… high 3.3 2021-01-01    It contains all kinds of data: numerical values, categorical values, timestamps, texts and images. Traditional ml models would face the challenge that they are specialized in a particular kind of data handling: language models in handling text (e.g. mlp n-gram or finetuning BERT), computer vision models in handling images (eg. training a CNN in TensorFlow or PyTorch), time series models in handling sequential data, and perhaps tree-based models in handling ordinary tabular data (eg. XGBoost). This leaves the data scientist with the challenge of either having to choose one model over the other, or finding a way to combine them in a reasonable way.\nHere, multimodal models come into play: While adding more data may help improving model performance, with multimodal models you are not only adding more data, you are broadening the range of information your model can learn from, all within one unified model architecture. The model may learn a joint representation of different modalities, which should yield more meaningful representations. Think of it as different ways in which the same thing can be comprehended that are combined into a unified representation of that thing.\nIn the retail industry for example, a product image may contain a lot of information about its shape and colours, while the product description contains information about the material and the functionality of the product. Classifying or comparing these objects will likely become easier, when all components are taken into consideration.\nOr think of memes:\nSecret Panel HERE 💾 https://t.co/k2oKd7K81N pic.twitter.com/iec6URfYNt\n— J. L. Westover (@MrLovenstein) April 18, 2020  A meme is only comprehensible when both the meaning of the image and the semantic information of the text are understood. If you would want to build a model to identify hateful memes, you will most likely employ a multimodal model architecture.\nIt is actually fairly easy to build a multimodal neural network. I will give you two examples of how a multimodal model can be defined and trained. Keep in mind that this is just for demonstration purposes. The models will be very simple. I am also not considering the broader context of machine learning workflows (reproducible model experimentation, hyperparameter tuning, model deployment, etc.) here.\nThe objective For demonstration purposes, I will use the movies_metadata.csv from Kaggle. To keep it simple, I will only consider the following columns as features:\n   id budget popularity revenue runtime movie_description     100 1350000 4.60786 3.89757e+06 105 A card sharp and his unwillingly-enlisted friends need to […] door.   10000 0 0.281609 0 116 A group of tenants […] were.    The two ‘modalities’ we will consider here, are just structured data and text as two input sources. I know, it’s not that multimodal, but using images wouldn’t be truly multimodal either 😄 (if you think of modalities in terms of modalities of perception). I guess in machine learning it is ok to refer to modalities as different ways of data handling (ie. text, image, structured data, etc.).\nThe objective of the classification task will be to predict movie genres. We thus deal with a multilabel classification task.\n   id Action Adventure Animation Comedy Crime Documentary Drama Family Fantasy Foreign History Horror Music Mystery Romance Science Fiction TV Movie Thriller War Western     100 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0   10000 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0   10001 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0    Building a multimodal classifier in Keras First I build a stacked Keras model with two components: A pretrained language model called distilbert, basically a smaller version of the langauge model BERT, and a feed-forward neural network to handle the structured input data (ie. conventional features like ‘popularity’, ‘budget’, etc.). After these components are defined, we will use Concatenate() to combine the output layers of both submodels and add a classification head to it.\n# Get pretrained language model with transformer architecture transformer_model = TFDistilBertModel.from_pretrained('distilbert-base-uncased') # define input layers for distilbert input_ids_in = tf.keras.layers.Input(shape=(512,), name='input_token', dtype='int32') input_masks_in = tf.keras.layers.Input(shape=(512,), name='masked_token', dtype='int32') # extract embedding layer embedding_layer = transformer_model(input_ids_in, attention_mask=input_masks_in)[0] cls_token = embedding_layer[:,0,:] # add feed forward layers language_model = tf.keras.layers.BatchNormalization()(cls_token) language_model = tf.keras.layers.Dense(128, activation='relu')(language_model) language_model = tf.keras.layers.Dropout(0.2)(language_model) language_model = tf.keras.layers.Dense(64, activation='relu')(language_model) language_model = tf.keras.layers.Dense(32, activation='relu')(language_model) # Add numerical layer numerical_input = tf.keras.layers.Input(shape=(numerical_input.shape[1],), name='numerical_input', dtype='float64') numerical_layer = tf.keras.layers.Dense(20, input_dim=numerical_input.shape[1], activation='relu')(numerical_input) After defining separate input and processing layers for the text and the nuermical input, the output of these layers will be concatenated and feed to the classification head.\n# Concatenate both layers concatted = tf.keras.layers.Concatenate()([language_model, numerical_layer]) # Add classification head with sigmoid activation head = tf.keras.layers.Dense(44, activation='relu')(concatted) head = tf.keras.layers.Dense(y_labels.shape[1], activation='sigmoid')(head) # define model with three input types, first two types will come from the tokenizer multimodal_model = tf.keras.Model(inputs=[input_ids_in, input_masks_in, numerical_input], outputs = head) # Prevent Distilbert from being trainable multimodal_model.layers[2].trainable = False If we would want to incorporate image data into our multimodal model, we would simply add a model architecture (pretrained model or custom CNN) and also feed this into the concatenation layer.\nThe Model summary illustrates the flow through the network where data from both parts, the language model and the numerical input mlp, are passed to the classification head. multimodal_model.summary() Model: \"model\" __________________________________________________________________________________________________ Layer (type) Output Shape Param # Connected to  ================================================================================================== input_token (InputLayer) [(None, 512)] 0 __________________________________________________________________________________________________ masked_token (InputLayer) [(None, 512)] 0 __________________________________________________________________________________________________ tf_distil_bert_model (TFDistilB TFBaseModelOutput(la 66362880 input_token[0][0] masked_token[0][0] __________________________________________________________________________________________________ tf.__operators__.getitem (Slici (None, 768) 0 tf_distil_bert_model[0][0] __________________________________________________________________________________________________ batch_normalization (BatchNorma (None, 768) 3072 tf.__operators__.getitem[0][0] __________________________________________________________________________________________________ dense (Dense) (None, 128) 98432 batch_normalization[0][0] __________________________________________________________________________________________________ dropout_19 (Dropout) (None, 128) 0 dense[0][0] __________________________________________________________________________________________________ dense_1 (Dense) (None, 64) 8256 dropout_19[0][0] __________________________________________________________________________________________________ numerical_input (InputLayer) [(None, 4)] 0 __________________________________________________________________________________________________ dense_2 (Dense) (None, 32) 2080 dense_1[0][0] __________________________________________________________________________________________________ dense_3 (Dense) (None, 20) 100 numerical_input[0][0] __________________________________________________________________________________________________ concatenate (Concatenate) (None, 52) 0 dense_2[0][0] dense_3[0][0] __________________________________________________________________________________________________ dense_4 (Dense) (None, 44) 2332 concatenate[0][0] __________________________________________________________________________________________________ dense_5 (Dense) (None, 20) 900 dense_4[0][0] ================================================================================================== Total params: 66,478,052 Trainable params: 113,636 Non-trainable params: 66,364,416 __________________________________________________________________________________________________\nWhen calling fit on the model, the different inputs need to be passed to the model as a list. # get training data input_ids, input_masks, numerical_input = preprocessing_multimodal_training_data() history = multimodal_model.fit( [input_ids, input_masks, numerical_input], y_labels, batch_size=BATCH_SIZE, validation_split=0.2, epochs=EPOCHS)\nUsing the AutoKeras API Another, even simpler option for building multimodal models is to use Autokeras. The library offers a high-level wrapper for Keras and makes it very easy to define a model architecture with multimodal inputs. It provides a lot of other benefits, such as neural search algorithm to automatically tune the model architecture.\nimport autokeras as ak # define multi_label classification head head = ak.ClassificationHead( loss='categorical_crossentropy', multi_label=True, metrics=['accuracy']) # get training data text, title, numerical_input = preprocessing_autokeras_training_data() # Define multi_modal model with AutoModel Class ak_multimodal_model = ak.AutoModel( inputs=[ak.TextInput(), ak.StructuredDataInput()], # You may add as many input sources as you want. outputs=head, # use predefined head as output overwrite=True, max_trials=1) # Fit the model model.fit( [text, numerical_input], # pass two objects as input y_labels, # and multi_label matrix as input epochs=EPOCHS) Multimodal models are easy Whether you want to use keras, autokeras, or any other framework, building multimodal models is not that hard and if you haven’t already, you should definitely consider this an option for building your next model. Autokeras makes it super simple to construct a multimodal model. Just call ak.AutoModel and add two inputs. Using the base Keras API on the other hand will give you more flexibility to experiment with different model architectures and to incorporate other pretrained models. Whether or not a multimodal model will improve your prediction task should be carefully experimented and tested against simpler models, but from my experience it is definitely worth trying a multimodal approach, whenever there is enough data available.\nIf you want try the models yourself, have a look at the code in colab.\n",
+  "wordCount" : "1340",
+  "inLanguage": "en",
+  "datePublished": "2021-01-15T00:00:00Z",
+  "dateModified": "2021-01-15T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://paulelvers.com/posts/multimodal/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "paul elvers",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://paulelvers.com/favicon.ico"
+    }
+  }
+}
+</script>
+
+
+
+</head>
+
+<body class="">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        .theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://paulelvers.com/" accesskey="h">paul elvers</a>
+            <span class="logo-switches">
+                <span class="theme-toggle">
+                    <a id="theme-toggle" accesskey="t">
+                        <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </a>
+                </span>
+                
+            </span>
+        </div>
+        <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+            <li>
+                <a href="http://paulelvers.com/posts" title="blog">
+                    <span>
+                        blog
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="http://paulelvers.com/about" title="about">
+                    <span>
+                        about
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="http://paulelvers.com/tags" title="tags">
+                    <span>
+                        tags
+                    </span>
+                </a>
+            </li></ul>
+    </nav>
+</header>
+
+    <main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      Build and train multimodal models
+    </h1>
+    <div class="post-meta">January 15, 2021
+
+    </div>
+  </header> 
+
+  <div class="post-content">
+<h3 id="the-problem">The problem<a hidden class="anchor" aria-hidden="true" href="#the-problem">#</a></h3>
+<p>Imagine a dataframe like this:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>text</th>
+<th>url_to_img</th>
+<th>category</th>
+<th>weight</th>
+<th>date produced</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>123</td>
+<td>&ldquo;..&rdquo;</td>
+<td>http://image&hellip;</td>
+<td>low</td>
+<td>6.8</td>
+<td>2021-01-01</td>
+</tr>
+<tr>
+<td>789</td>
+<td>&ldquo;..&rdquo;</td>
+<td>http://image&hellip;</td>
+<td>middle</td>
+<td>7.1</td>
+<td>2021-01-01</td>
+</tr>
+<tr>
+<td>964</td>
+<td>&ldquo;..&rdquo;</td>
+<td>http://image&hellip;</td>
+<td>high</td>
+<td>3.3</td>
+<td>2021-01-01</td>
+</tr>
+</tbody>
+</table>
+<p>It contains all kinds of data: numerical values, categorical values, timestamps, texts and images. <em>Traditional</em> ml models would face the challenge that they are specialized in a particular kind of data handling: language models in handling text (e.g. <a href="https://developers.google.com/machine-learning/guides/text-classification/step-4">mlp n-gram</a> or <a href="https://huggingface.co/transformers/training.html">finetuning BERT</a>), computer vision models in handling images (eg. training a CNN in <a href="https://www.tensorflow.org/tutorials/keras/classification">TensorFlow</a> or <a href="https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html">PyTorch</a>), time series models in handling sequential data, and perhaps tree-based models in handling <em>ordinary</em> tabular data (eg. <a href="https://xgboost.readthedocs.io/en/latest/python/python_intro.html">XGBoost</a>). This leaves the data scientist with the challenge of either having to choose one model over the other, or finding a way to combine them in a reasonable way.</p>
+<p>Here, multimodal models come into play: While adding more data may help improving model performance, with multimodal models you are not only adding more data, you are <em>broadening</em> the range of information your model can learn from, all within one unified model architecture. The model may learn a joint representation of <em>different</em> modalities, which should yield more meaningful representations. Think of it as different ways in which the same thing can be comprehended that are combined into a unified representation of that thing.</p>
+<p>In the retail industry for example, a product image may contain a lot of information about its shape and colours, while the product description contains information about the material and the functionality of the product. Classifying or comparing these objects will likely become easier, when all components are taken into consideration.</p>
+<p>Or think of memes:</p>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Secret Panel HERE 💾 <a href="https://t.co/k2oKd7K81N">https://t.co/k2oKd7K81N</a> <a href="https://t.co/iec6URfYNt">pic.twitter.com/iec6URfYNt</a></p>&mdash; J. L. Westover (@MrLovenstein) <a href="https://twitter.com/MrLovenstein/status/1251496528759468033?ref_src=twsrc%5Etfw">April 18, 2020</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>A meme is only comprehensible when both the meaning of the image and the semantic information of the text are understood. If you would want to build a model to identify hateful memes, you will most likely employ a multimodal model architecture.</p>
+<p>It is actually fairly easy to build a multimodal neural network. I will give you two examples of how a multimodal model can be defined and trained. Keep in mind that this is just for demonstration purposes. The models will be very simple. I am also not considering the broader context of machine learning workflows (reproducible model experimentation, hyperparameter tuning, model deployment, etc.) here.</p>
+<h3 id="the-objective">The objective<a hidden class="anchor" aria-hidden="true" href="#the-objective">#</a></h3>
+<p>For demonstration purposes, I will use the <code>movies_metadata.csv</code> from <a href="https://www.kaggle.com/rounakbanik/the-movies-dataset?select=movies_metadata.csv">Kaggle</a>. To keep it simple, I will only consider the following columns as features:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">id</th>
+<th style="text-align:right">budget</th>
+<th style="text-align:right">popularity</th>
+<th style="text-align:right">revenue</th>
+<th style="text-align:right">runtime</th>
+<th style="text-align:left">movie_description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">100</td>
+<td style="text-align:right">1350000</td>
+<td style="text-align:right">4.60786</td>
+<td style="text-align:right">3.89757e+06</td>
+<td style="text-align:right">105</td>
+<td style="text-align:left">A card sharp and his unwillingly-enlisted friends need to  [&hellip;] door.</td>
+</tr>
+<tr>
+<td style="text-align:right">10000</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0.281609</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">116</td>
+<td style="text-align:left">A group of tenants [&hellip;] were.</td>
+</tr>
+</tbody>
+</table>
+<p>The two &lsquo;modalities&rsquo; we will consider here, are just structured data and text as two input sources. I know, it&rsquo;s not <em>that</em> multimodal, but using images wouldn&rsquo;t be truly multimodal either 😄  (if you think of modalities in terms of modalities of perception). I guess in machine learning it is ok to refer to modalities as different ways of data handling (ie. text, image, structured data, etc.).</p>
+<p>The objective of the classification task will be to predict movie genres. We thus deal with a multilabel classification task.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">id</th>
+<th style="text-align:right">Action</th>
+<th style="text-align:right">Adventure</th>
+<th style="text-align:right">Animation</th>
+<th style="text-align:right">Comedy</th>
+<th style="text-align:right">Crime</th>
+<th style="text-align:right">Documentary</th>
+<th style="text-align:right">Drama</th>
+<th style="text-align:right">Family</th>
+<th style="text-align:right">Fantasy</th>
+<th style="text-align:right">Foreign</th>
+<th style="text-align:right">History</th>
+<th style="text-align:right">Horror</th>
+<th style="text-align:right">Music</th>
+<th style="text-align:right">Mystery</th>
+<th style="text-align:right">Romance</th>
+<th style="text-align:right">Science Fiction</th>
+<th style="text-align:right">TV Movie</th>
+<th style="text-align:right">Thriller</th>
+<th style="text-align:right">War</th>
+<th style="text-align:right">Western</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">100</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">10000</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">10001</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="building-a-multimodal-classifier-in-keras">Building a multimodal classifier in Keras<a hidden class="anchor" aria-hidden="true" href="#building-a-multimodal-classifier-in-keras">#</a></h3>
+<p><img src="/markdown_image.png" alt="multimodal architecture"></p>
+<p>First I build a stacked Keras model with two components: A pretrained language model called <code>distilbert</code>, basically a smaller version of the langauge model <a href="https://arxiv.org/abs/1810.04805">BERT</a>, and a feed-forward neural network to handle the structured input data (ie. conventional features like &lsquo;popularity&rsquo;, &lsquo;budget&rsquo;, etc.). After these components are defined, we will use Concatenate() to combine the output layers of both submodels and add a classification head to it.</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#60a0b0;font-style:italic"># Get pretrained language model with transformer architecture</span>
+transformer_model <span style="color:#666">=</span> TFDistilBertModel<span style="color:#666">.</span>from_pretrained(<span style="color:#4070a0">&#39;distilbert-base-uncased&#39;</span>)
+
+<span style="color:#60a0b0;font-style:italic"># define input layers for distilbert</span>
+input_ids_in <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Input(shape<span style="color:#666">=</span>(<span style="color:#40a070">512</span>,), name<span style="color:#666">=</span><span style="color:#4070a0">&#39;input_token&#39;</span>, dtype<span style="color:#666">=</span><span style="color:#4070a0">&#39;int32&#39;</span>)
+input_masks_in <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Input(shape<span style="color:#666">=</span>(<span style="color:#40a070">512</span>,), name<span style="color:#666">=</span><span style="color:#4070a0">&#39;masked_token&#39;</span>, dtype<span style="color:#666">=</span><span style="color:#4070a0">&#39;int32&#39;</span>)
+
+<span style="color:#60a0b0;font-style:italic"># extract embedding layer</span>
+embedding_layer <span style="color:#666">=</span> transformer_model(input_ids_in, attention_mask<span style="color:#666">=</span>input_masks_in)[<span style="color:#40a070">0</span>]
+cls_token <span style="color:#666">=</span> embedding_layer[:,<span style="color:#40a070">0</span>,:]
+
+<span style="color:#60a0b0;font-style:italic"># add feed forward layers</span>
+language_model <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>BatchNormalization()(cls_token)
+language_model <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Dense(<span style="color:#40a070">128</span>, activation<span style="color:#666">=</span><span style="color:#4070a0">&#39;relu&#39;</span>)(language_model)
+language_model <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Dropout(<span style="color:#40a070">0.2</span>)(language_model)
+language_model <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Dense(<span style="color:#40a070">64</span>, activation<span style="color:#666">=</span><span style="color:#4070a0">&#39;relu&#39;</span>)(language_model)
+language_model <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Dense(<span style="color:#40a070">32</span>, activation<span style="color:#666">=</span><span style="color:#4070a0">&#39;relu&#39;</span>)(language_model)
+
+<span style="color:#60a0b0;font-style:italic"># Add numerical layer</span>
+numerical_input <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Input(shape<span style="color:#666">=</span>(numerical_input<span style="color:#666">.</span>shape[<span style="color:#40a070">1</span>],), name<span style="color:#666">=</span><span style="color:#4070a0">&#39;numerical_input&#39;</span>, dtype<span style="color:#666">=</span><span style="color:#4070a0">&#39;float64&#39;</span>)
+numerical_layer <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Dense(<span style="color:#40a070">20</span>, input_dim<span style="color:#666">=</span>numerical_input<span style="color:#666">.</span>shape[<span style="color:#40a070">1</span>], activation<span style="color:#666">=</span><span style="color:#4070a0">&#39;relu&#39;</span>)(numerical_input)</code></pre></div>
+<p>After defining separate input and processing layers for the text and the nuermical input, the output of these layers will be concatenated and feed to the classification head.</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#60a0b0;font-style:italic"># Concatenate both layers</span>
+concatted <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Concatenate()([language_model, numerical_layer])
+
+<span style="color:#60a0b0;font-style:italic"># Add classification head with sigmoid activation</span>
+head <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Dense(<span style="color:#40a070">44</span>, activation<span style="color:#666">=</span><span style="color:#4070a0">&#39;relu&#39;</span>)(concatted)
+head <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>layers<span style="color:#666">.</span>Dense(y_labels<span style="color:#666">.</span>shape[<span style="color:#40a070">1</span>], activation<span style="color:#666">=</span><span style="color:#4070a0">&#39;sigmoid&#39;</span>)(head)
+
+<span style="color:#60a0b0;font-style:italic"># define model with three input types, first two types will come from the tokenizer</span>
+multimodal_model <span style="color:#666">=</span> tf<span style="color:#666">.</span>keras<span style="color:#666">.</span>Model(inputs<span style="color:#666">=</span>[input_ids_in, input_masks_in, numerical_input], outputs <span style="color:#666">=</span> head)
+
+<span style="color:#60a0b0;font-style:italic"># Prevent Distilbert from being trainable</span>
+multimodal_model<span style="color:#666">.</span>layers[<span style="color:#40a070">2</span>]<span style="color:#666">.</span>trainable <span style="color:#666">=</span> False</code></pre></div>
+<p>If we would want to incorporate image data into our multimodal model, we would simply add a model architecture (pretrained model or custom CNN) and also feed this into the concatenation layer.</p>
+<p>The Model summary illustrates the flow through the network where data from both parts, the language model and the numerical input mlp, are passed to the classification head.
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">multimodal_model<span style="color:#666">.</span>summary()
+
+Model: <span style="color:#4070a0">&#34;model&#34;</span>
+__________________________________________________________________________________________________
+Layer (<span style="color:#007020">type</span>)                    Output Shape         Param <span style="color:#60a0b0;font-style:italic">#     Connected to                     </span>
+<span style="color:#666">==================================================================================================</span>
+input_token (InputLayer)        [(None, <span style="color:#40a070">512</span>)]        <span style="color:#40a070">0</span>                                            
+__________________________________________________________________________________________________
+masked_token (InputLayer)       [(None, <span style="color:#40a070">512</span>)]        <span style="color:#40a070">0</span>                                            
+__________________________________________________________________________________________________
+tf_distil_bert_model (TFDistilB TFBaseModelOutput(la <span style="color:#40a070">66362880</span>    input_token[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]                
+                                                                 masked_token[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]               
+__________________________________________________________________________________________________
+tf<span style="color:#666">.</span>__operators__<span style="color:#666">.</span>getitem (Slici (None, <span style="color:#40a070">768</span>)          <span style="color:#40a070">0</span>           tf_distil_bert_model[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]       
+__________________________________________________________________________________________________
+batch_normalization (BatchNorma (None, <span style="color:#40a070">768</span>)          <span style="color:#40a070">3072</span>        tf<span style="color:#666">.</span>__operators__<span style="color:#666">.</span>getitem[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]   
+__________________________________________________________________________________________________
+dense (Dense)                   (None, <span style="color:#40a070">128</span>)          <span style="color:#40a070">98432</span>       batch_normalization[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]        
+__________________________________________________________________________________________________
+dropout_19 (Dropout)            (None, <span style="color:#40a070">128</span>)          <span style="color:#40a070">0</span>           dense[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]                      
+__________________________________________________________________________________________________
+dense_1 (Dense)                 (None, <span style="color:#40a070">64</span>)           <span style="color:#40a070">8256</span>        dropout_19[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]                 
+__________________________________________________________________________________________________
+numerical_input (InputLayer)    [(None, <span style="color:#40a070">4</span>)]          <span style="color:#40a070">0</span>                                            
+__________________________________________________________________________________________________
+dense_2 (Dense)                 (None, <span style="color:#40a070">32</span>)           <span style="color:#40a070">2080</span>        dense_1[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]                    
+__________________________________________________________________________________________________
+dense_3 (Dense)                 (None, <span style="color:#40a070">20</span>)           <span style="color:#40a070">100</span>         numerical_input[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]            
+__________________________________________________________________________________________________
+concatenate (Concatenate)       (None, <span style="color:#40a070">52</span>)           <span style="color:#40a070">0</span>           dense_2[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]                    
+                                                                 dense_3[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]                    
+__________________________________________________________________________________________________
+dense_4 (Dense)                 (None, <span style="color:#40a070">44</span>)           <span style="color:#40a070">2332</span>        concatenate[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]                
+__________________________________________________________________________________________________
+dense_5 (Dense)                 (None, <span style="color:#40a070">20</span>)           <span style="color:#40a070">900</span>         dense_4[<span style="color:#40a070">0</span>][<span style="color:#40a070">0</span>]                    
+<span style="color:#666">==================================================================================================</span>
+Total params: <span style="color:#40a070">66</span>,<span style="color:#40a070">478</span>,<span style="color:#40a070">052</span>
+Trainable params: <span style="color:#40a070">113</span>,<span style="color:#40a070">636</span>
+Non<span style="color:#666">-</span>trainable params: <span style="color:#40a070">66</span>,<span style="color:#40a070">364</span>,<span style="color:#40a070">416</span>
+__________________________________________________________________________________________________</code></pre></div></p>
+<p>When calling <code>fit</code> on the model, the different inputs need to be passed to the model as a list.
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#60a0b0;font-style:italic"># get training data</span>
+input_ids, input_masks, numerical_input <span style="color:#666">=</span> preprocessing_multimodal_training_data()
+
+history <span style="color:#666">=</span> multimodal_model<span style="color:#666">.</span>fit(
+  [input_ids, input_masks, numerical_input],
+    y_labels,
+    batch_size<span style="color:#666">=</span>BATCH_SIZE,
+    validation_split<span style="color:#666">=</span><span style="color:#40a070">0.2</span>,
+    epochs<span style="color:#666">=</span>EPOCHS)</code></pre></div></p>
+<h3 id="using-the-autokeras-api">Using the AutoKeras API<a hidden class="anchor" aria-hidden="true" href="#using-the-autokeras-api">#</a></h3>
+<p>Another, even simpler option for building multimodal models is to use <a href="https://autokeras.com/">Autokeras</a>. The library offers a high-level wrapper for Keras and makes it very easy to define a model architecture with multimodal inputs. It provides a lot of other benefits, such as neural search algorithm to automatically tune the model architecture.</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#007020;font-weight:bold">import</span> <span style="color:#0e84b5;font-weight:bold">autokeras</span> <span style="color:#007020;font-weight:bold">as</span> <span style="color:#0e84b5;font-weight:bold">ak</span>
+
+<span style="color:#60a0b0;font-style:italic"># define multi_label classification head</span>
+head <span style="color:#666">=</span> ak<span style="color:#666">.</span>ClassificationHead(
+        loss<span style="color:#666">=</span><span style="color:#4070a0">&#39;categorical_crossentropy&#39;</span>,
+        multi_label<span style="color:#666">=</span>True,
+        metrics<span style="color:#666">=</span>[<span style="color:#4070a0">&#39;accuracy&#39;</span>])
+
+<span style="color:#60a0b0;font-style:italic"># get training data</span>
+text, title, numerical_input <span style="color:#666">=</span> preprocessing_autokeras_training_data()
+
+<span style="color:#60a0b0;font-style:italic"># Define multi_modal model with AutoModel Class</span>
+ak_multimodal_model <span style="color:#666">=</span> ak<span style="color:#666">.</span>AutoModel(
+    inputs<span style="color:#666">=</span>[ak<span style="color:#666">.</span>TextInput(), ak<span style="color:#666">.</span>StructuredDataInput()], <span style="color:#60a0b0;font-style:italic"># You may add as many input sources as you want.</span>
+    outputs<span style="color:#666">=</span>head, <span style="color:#60a0b0;font-style:italic"># use predefined head as output</span>
+    overwrite<span style="color:#666">=</span>True,
+    max_trials<span style="color:#666">=</span><span style="color:#40a070">1</span>)
+
+<span style="color:#60a0b0;font-style:italic"># Fit the model</span>
+model<span style="color:#666">.</span>fit(
+    [text, numerical_input], <span style="color:#60a0b0;font-style:italic"># pass two objects as input</span>
+    y_labels, <span style="color:#60a0b0;font-style:italic"># and multi_label matrix as input</span>
+    epochs<span style="color:#666">=</span>EPOCHS)</code></pre></div>
+<h3 id="multimodal-models-are-easy">Multimodal models are easy<a hidden class="anchor" aria-hidden="true" href="#multimodal-models-are-easy">#</a></h3>
+<p>Whether you want to use keras, autokeras, or any other framework, building multimodal models is not that hard and  if you haven&rsquo;t already, you should definitely consider this an option for building your next model. Autokeras makes it super simple to construct a multimodal model. Just call <code>ak.AutoModel</code> and add two inputs. Using the base Keras API on the other hand will give you more flexibility to experiment with different model architectures and to incorporate other pretrained models. Whether or not a multimodal model will improve your prediction task should be carefully experimented and tested against simpler models, but from my experience it is definitely worth trying a multimodal approach, whenever there is enough data available.</p>
+<p>If you want try the models yourself, have a look at the code in <a href="https://colab.research.google.com/drive/1asU9BWvBoFAGhTFND_Yg02068KlNojph?usp=sharing">colab</a>.</p>
+
+</div>
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main><footer class="footer">
+    <span>© Paul Elvers 2020</span>
+</footer>
+<button class="top-link" id="top-link" type="button" aria-label="go to top" title="Go to Top" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6">
+        <path d="M12 6H0l6-6z" /></svg>
+</button>
+
+
+
+<script defer src="http://paulelvers.com/assets/js/highlight.min.27cd435cc9ed6abb4b496581b151804f79f366c412620272bb94e2f5f598ebcc.js" integrity="sha256-J81DXMntartLSWWBsVGAT3nzZsQSYgJyu5Ti9fWY68w="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+    mybutton.onclick = function () {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        window.location.hash = ''
+    }
+
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+
+</body>
+
+</html>
