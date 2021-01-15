@@ -14,8 +14,9 @@
       <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>http://paulelvers.com/posts/multimodal/</guid>
-      <description>The problem Imagine a dataframe like this:
-   id text url_to_img category weight date produced     123 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; low 6.8 2021-01-01   789 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; middle 7.1 2021-01-01   964 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; high 3.3 2021-01-01    It contains all kinds of data: numerical values, categorical values, timestamps, texts and images. Traditional ml models would face the challenge that they are specialized in a particular kind of data handling: language models in handling text (e.</description>
+      <description>Building multimodal models is not that hard and if you haven&amp;rsquo;t already, you should definitely consider this an option, whenever you encounter scenarios like the following:
+The problem Imagine a dataframe like this:
+   id text url_to_img category weight date produced     123 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; low 6.8 2021-01-01   789 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; middle 7.1 2021-01-01   964 &amp;ldquo;..&amp;rdquo; http://image&amp;hellip; high 3.3 2021-01-01    It contains all kinds of data: numerical values, categorical values, timestamps, texts and images.</description>
     </item>
     
     <item>
