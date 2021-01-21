@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on paul elvers</title>
-    <link>http://paulelvers.com/posts/</link>
-    <description>Recent content in Posts on paul elvers</description>
+    <title>ml on paul elvers</title>
+    <link>http://paulelvers.com/tags/ml/</link>
+    <description>Recent content in ml on paul elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Paul Elvers 2020</copyright>
-    <lastBuildDate>Fri, 15 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/tags/ml/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Multimodal Models</title>
       <link>http://paulelvers.com/posts/multimodal/</link>
@@ -15,16 +15,6 @@
       
       <guid>http://paulelvers.com/posts/multimodal/</guid>
       <description>I still experience a moment of excitement, whenever I start on a new ml project and look at my prediction results for the first time, not sure whether this will be a good model or just garbage. I am not talking about metrics, but just about the actual prediction outputs. There is this thing that so many people working with algorithms may now take for granted, that actually sometimes touches me in this particular moment, when the predictions do &amp;lsquo;make sense&amp;rsquo;: A machine actually learned to produce something meaningful.</description>
-    </item>
-    
-    <item>
-      <title>SettingWithCopyWarning</title>
-      <link>http://paulelvers.com/posts/pandas-things/</link>
-      <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
-      
-      <guid>http://paulelvers.com/posts/pandas-things/</guid>
-      <description>Pandas is undoubtedly one of the most important Python libraries in data science and machine learning. Many practitioners in the field are using it on a daily basis. But even as an experienced user, you might have been puzzled by this warning: SettingWithCopyWarning. A value is trying to be set on a copy of a slice from a DataFrame. Try using .loc[row_indexer,col_indexer] = value instead.
-It could be tempting to just ignore it, especially when the code does what you wanted.</description>
     </item>
     
   </channel>

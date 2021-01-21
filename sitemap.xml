@@ -3,6 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://paulelvers.com/tags/keras/</loc>
+    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://paulelvers.com/tags/ml/</loc>
+    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://paulelvers.com/tags/multimodal/</loc>
+    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://paulelvers.com/posts/multimodal/</loc>
     <lastmod>2021-01-15T00:00:00+00:00</lastmod>
   </url>
@@ -14,6 +29,16 @@
   
   <url>
     <loc>http://paulelvers.com/posts/</loc>
+    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://paulelvers.com/tags/python/</loc>
+    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://paulelvers.com/tags/</loc>
     <lastmod>2021-01-15T00:00:00+00:00</lastmod>
   </url>
   
@@ -33,17 +58,7 @@
   </url>
   
   <url>
-    <loc>http://paulelvers.com/tags/python/</loc>
-    <lastmod>2020-12-14T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://paulelvers.com/posts/pandas-things/</loc>
-    <lastmod>2020-12-14T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://paulelvers.com/tags/</loc>
     <lastmod>2020-12-14T00:00:00+00:00</lastmod>
   </url>
   
