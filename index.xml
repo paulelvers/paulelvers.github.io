@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Data Science, MLOps, AI on Paul Elvers</title>
-    <link>https://example.com/</link>
+    <link>http://paulelvers.com/</link>
     <description>Recent content in Data Science, MLOps, AI on Paul Elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 05 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Cloud-based, containerized ML workflows</title>
-      <link>https://example.com/posts/sagemaker_intro/</link>
+      <link>http://paulelvers.com/posts/sagemaker_intro/</link>
       <pubDate>Fri, 24 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/sagemaker_intro/</guid>
+      <guid>http://paulelvers.com/posts/sagemaker_intro/</guid>
       <description>How to use AWS Sagemaker for Model Training &amp;amp; Deployment Carsten Frommhold and I wrote a short blog post about how to train and deploy a model on AWS Sagemaker. Check it out here</description>
     </item>
     
     <item>
       <title>About</title>
-      <link>https://example.com/pages/about/</link>
+      <link>http://paulelvers.com/pages/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/pages/about/</guid>
+      <guid>http://paulelvers.com/pages/about/</guid>
       <description>I am Head of AI/Data Science at Datadrivers, an IT Consulting Company in Hamburg. Together with my team we help our clients to drive their business impact through ml-powered systems. We provide solutions ranging from identifying and defining machine learning use cases, to building highly customised systems that help leverage the full potential of machine learning for your business.
 BEFORE I was a Senior AI Engineer &amp;amp; Data Scientist at Datadrivers, Tchibo GmbH and Smartclip, working on topics like Designing Production ML Systems, Recommendation Engines, Adtech, Forecasting, Data Pipelines, Data Engineering and many more.</description>
     </item>
