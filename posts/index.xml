@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on paul elvers</title>
-    <link>http://paulelvers.com/posts/</link>
-    <description>Recent content in Posts on paul elvers</description>
+    <title>Blog on Paul Elvers</title>
+    <link>https://example.com/posts/</link>
+    <description>Recent content in Blog on Paul Elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>© Paul Elvers 2020</copyright>
-    <lastBuildDate>Fri, 15 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Feb 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Multimodal Models</title>
-      <link>http://paulelvers.com/posts/multimodal/</link>
-      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
+      <title>The revolution will be complete when the language is perfect</title>
+      <link>https://example.com/posts/language-perfect/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://paulelvers.com/posts/multimodal/</guid>
-      <description>I still experience a moment of excitement, whenever I start on a new ml project and look at my prediction results for the first time, not sure whether this will be a good model or just garbage. I am not talking about metrics, but just about the actual prediction outputs. There is this thing that so many people working with algorithms may now take for granted, that actually sometimes touches me in this particular moment, when the predictions do &amp;lsquo;make sense&amp;rsquo;: A machine actually learned to produce something meaningful.</description>
+      <guid>https://example.com/posts/language-perfect/</guid>
+      <description>He moved over to the window Since about that time, war had been literally continuous, though strictly speaking it had not always been the same war. For several months during his childhood there had been confused street fighting in London itself, some of which he remembered vividly.
+Inside the flat a fruity voice was reading out a list of figures which had something to do with the production of pig iron.</description>
     </item>
     
     <item>
-      <title>SettingWithCopyWarning</title>
-      <link>http://paulelvers.com/posts/pandas-things/</link>
-      <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
+      <title>Sanity is not statistical</title>
+      <link>https://example.com/posts/sanity-not-statistical/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://paulelvers.com/posts/pandas-things/</guid>
-      <description>Pandas is undoubtedly one of the most important Python libraries in data science and machine learning. Many practitioners in the field are using it on a daily basis. But even as an experienced user, you might have been puzzled by this warning: SettingWithCopyWarning. A value is trying to be set on a copy of a slice from a DataFrame. Try using .loc[row_indexer,col_indexer] = value instead.
-It could be tempting to just ignore it, especially when the code does what you wanted.</description>
+      <guid>https://example.com/posts/sanity-not-statistical/</guid>
+      <description>There was no way of knowing whose version would finally be adopted Once again he glanced at his rival in the opposite cubicle. Something seemed to tell him with certainty that Tillotson was busy on the same job as himself. There was no way of knowing whose version would finally be adopted, but he felt a profound conviction that it would be his own
+Mare torrentur Mare torrentur tenuerunt Iovemque crudelis erat non manuque nullaque Pyreneus, evocet pectus, nube.</description>
+    </item>
+    
+    <item>
+      <title>It&#39;s a beautiful thing, the destruction of words</title>
+      <link>https://example.com/posts/destruction-of-words/</link>
+      <pubDate>Tue, 30 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/destruction-of-words/</guid>
+      <description>He moved over to the window Lorem markdownum comes; pro est modo famulus, quo quod neu manibus aether his nomine, Aurora, voce. Ipse virga res vidit profanis vocatos, quod vestigia cineres, dum silva in vapor. Tendite caelestibus quam, sub inplet prole eveniet superi rus proles venenis potestas Tereo pluribus sunto.
+Perque cessisse, hoc tum auras sinuosa. Pressant nec vinci primoque quoque funibus est: et tempore vetitorum? Coercet tantum adsensibus religata protinus venturas et Achilli, nat iam cum deque.</description>
     </item>
     
   </channel>
