@@ -6,7 +6,16 @@
     <description>Recent content in Data Science, MLOps, AI on Paul Elvers</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 05 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://paulelvers.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Getting Started with MLOps</title>
+      <link>http://paulelvers.com/posts/mlops/</link>
+      <pubDate>Mon, 18 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://paulelvers.com/posts/mlops/</guid>
+      <description> </description>
+    </item>
+    
     <item>
       <title>Cloud-based, containerized ML workflows</title>
       <link>http://paulelvers.com/posts/sagemaker_intro/</link>
